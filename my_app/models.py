@@ -114,7 +114,8 @@ class PhieuKhamBenh(db.Model):
     id_BacSi = Column(Integer, ForeignKey(BacSi.id), nullable=False)
     hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
 
-
+    def __str__(self):
+        return str(self.id_KhamBenh) + "---" + str(self.id_Benh) + "---" + str(self.id_BacSi)
 
 
 class DonThuoc(db.Model):
@@ -123,16 +124,25 @@ class DonThuoc(db.Model):
     soLuong = Column(Integer)
     id_CachDung = Column(Integer, ForeignKey(CachDung.id), nullable=False)
 
+    def __str__(self):
+        return str(self.id_KhamBenh) + "---" + str(self.id_Thuoc)
+
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
     total = Column(Float)
     danhSachThuoc = relationship("ChiTietHoaDon", backref="hoaDon", lazy=True)
+
+    def __str__(self):
+        return str(self.id_KhamBenh) + "---" + str(self.total)
 
 class ChiTietHoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(HoaDon.id_KhamBenh), primary_key=True)
     id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
     gia = Column(Float, nullable=False)
     soLuong = Column(Integer, nullable=False)
+
+    def __str__(self):
+        return str(self.id_KhamBenh) + "---" + str(self.gia) + "---" + str(self.soLuong)
 
 class DangKyOnline(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -143,6 +153,9 @@ class DangKyOnline(db.Model):
     isKhamLanDau = Column(Boolean, default=False) # đánh dấu bệnh nhân đã từng khám ở bệnh viện
     tamThoiLuu = relationship("TamThoiLuuTru", backref="dangKyOnline", lazy=True)
 
+    def __str__(self):
+        return str(self.ngayKhamDangKy) + "---" + str(self.ngayDangKy)  + "---" + str(self.id_BenhNhan) + "---" + str(self.isKhamLanDau)
+
 class TamThoiLuuTru(db.Model):
     id = Column(Integer, ForeignKey(DangKyOnline.id), nullable=False, primary_key=True)
     #soDT = Column(String(20), nullable=False)
@@ -150,7 +163,8 @@ class TamThoiLuuTru(db.Model):
                                                # trangThai=True là người bệnh đã thanh toán nhưng đang chờ duyệt
     # nếu như bệnh nhân đang ở trong bảng TamThoiLuuTru nhưng trước đó đã từng đăng ký online thì sẽ lấy lần đăng ký
     # có thời gian đăng ký gần đây nhất
-
+    def __str__(self):
+        return str(self.id) + "---" + str(self.trangThai)
 
 
 if __name__ == "__main__":
