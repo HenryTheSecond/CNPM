@@ -1,11 +1,11 @@
 from my_app import db
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Boolean, DateTime, Date
 from sqlalchemy.orm import relationship
-#from flask_login import UserMixin
+from flask_login import UserMixin
 from datetime import datetime
 
 class Role(db.Model):
-    __tablename__ = "role"
+    #__tablename__ = "role"
     id = Column(Integer, primary_key=True, autoincrement=True)
     tenRole = Column(String(50))
     users = relationship("User", backref="role", lazy=True)
@@ -13,7 +13,7 @@ class Role(db.Model):
     def __str__(self):
         return self.tenRole
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable= False)
@@ -32,8 +32,6 @@ class BacSi(db.Model):
     id = Column(Integer, ForeignKey(User.id), primary_key=True)
     danhSachPhieuKham = relationship("PhieuKhamBenh", backref="bacSi", lazy=True)
 
-    def __str__(self):
-        self.thongTin.ten
 
 
 class Benh(db.Model):
@@ -47,7 +45,7 @@ class Benh(db.Model):
 class CachDung(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     ten = Column(String(50), nullable=False)
-    danhSachThuoc = relationship("Thuoc", backref="cachDung", lazy=True)
+    danhSachDonThuoc = relationship("DonThuoc", backref="cachDung", lazy=True)
 
     def __str__(self):
         return self.ten
@@ -64,7 +62,6 @@ class Thuoc(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     tenThuoc = Column(String(50), nullable=False)
     id_DonVi = Column(Integer, ForeignKey(DonVi.id), nullable=False)
-    id_CachDung = Column(Integer, ForeignKey(CachDung.id), nullable=False)
     gia = Column(Float, nullable=False)
     danhSachThuocDaBan = relationship("ChiTietHoaDon", backref="thuoc", lazy=True)
     danhSachThuocDaKeDon = relationship("DonThuoc", backref="thuoc", lazy=True)
@@ -73,12 +70,14 @@ class Thuoc(db.Model):
         return self.tenThuoc
 
 class SoBenhNhan(db.Model):
-    soLuong = Column(Integer, nullable=False, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    soLuong = Column(Integer, nullable=False)
 
     def __str__(self):
         return self.soLuong
 
 class TienKham(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
     gia = Column(Float, nullable=False, primary_key=True)
 
     def __str__(self):
@@ -106,7 +105,7 @@ class KhamBenh(db.Model):
     #hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
 
     def __str__(self):
-        return self.id + " --- " + self.benhNhan.ten
+        return str(self.id) + " --- " + self.benhNhan.ten
 
 class PhieuKhamBenh(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(KhamBenh.id), primary_key=True)
@@ -117,10 +116,12 @@ class PhieuKhamBenh(db.Model):
 
 
 
+
 class DonThuoc(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
     id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
     soLuong = Column(Integer)
+    id_CachDung = Column(Integer, ForeignKey(CachDung.id), nullable=False)
 
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)

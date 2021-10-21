@@ -1,5 +1,13 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-<h1 class="text-center">CHÀO MỪNG ĐẾN VỚI TRANG QUẢN TRỊ</h1>
+{% if current_user.is_authenticated %}
+{% if current_user.role_Id == 1 %}
+<h1 class="text-center">CHÀO MỪNG {{current_user.ten}} ĐẾN VỚI TRANG QUẢN TRỊ</h1>
+{% else %}
+<h1 class="text-center">BẠN KHÔNG CÓ QUYỀN TRUY CẬP TRANG NÀY</h1>
+{% endif %}
+{% else %}
+    {% include 'layout/login.html' %}
+{% endif %}
 {% endblock %}
