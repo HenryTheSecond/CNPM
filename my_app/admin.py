@@ -34,7 +34,8 @@ class DangKyOnlineView(AuthenticatedView):
     pass
 
 class DonThuocView(AuthenticatedView):
-    pass
+    can_create = True;
+    column_list = ('id_KhamBenh', 'id_Thuoc', 'Soluong', 'id_CachDung')
 
 class DonViView(AuthenticatedView):
     pass
