@@ -3,9 +3,13 @@
 {% block body %}
 {% if current_user.is_authenticated %}
 {% if current_user.role_Id == 1 %}
-<h1 class="text-center">CHÀO MỪNG {{current_user.ten}} ĐẾN VỚI TRANG QUẢN TRỊ</h1>
+<div class="alert alert-primary" role="alert">
+    <h1 class="text-center text-uppercase text-black font-weight-bold">CHÀO MỪNG {{current_user.ten}} ĐẾN VỚI TRANG QUẢN TRỊ</h1>
+</div>
 {% else %}
-<h1 class="text-center">BẠN KHÔNG CÓ QUYỀN TRUY CẬP TRANG NÀY</h1>
+<div class="alert alert-primary" role="alert">
+    <h1 class="text-center text-uppercase text-black font-weight-bold">BẠN KHÔNG CÓ QUYỀN TRUY CẬP TRANG NÀY</h1>
+</div>
 {% endif %}
 {% else %}
     {% include 'layout/login.html' %}
