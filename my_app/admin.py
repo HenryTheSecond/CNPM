@@ -72,6 +72,14 @@ class LogoutView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated
 
+class StatsView(BaseView):
+    @expose("/")
+    def index(self):
+        return self.render("admin/stats.html")
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role_Id == 1
+
 admin.add_view(DangKyOnlineView(DangKyOnline, db.session , name="Đăng Ký Online"))
 admin.add_view(TamThoiLuuTruView(TamThoiLuuTru, db.session , name="Lưu Trữ Tạm"))
 admin.add_view(SoBenhNhanView(SoBenhNhan, db.session, name="Số Lượng Bệnh Nhân 1 Ngày"))
@@ -88,4 +96,5 @@ admin.add_view(CachDungView(CachDung, db.session , name="Cách Dùng"))
 admin.add_view(DonViView(DonVi, db.session , name="Đơn Vị"))
 admin.add_view(RoleView(Role, db.session , name="Role"))
 admin.add_view(TienKhamView(TienKham, db.session , name="Tiền Khám Bệnh"))
+admin.add_view(StatsView(name="Thống Kê"))
 admin.add_view(LogoutView(name="Đăng xuất"))

@@ -132,7 +132,7 @@ class DonThuoc(db.Model):
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
     total = Column(Float)
-    danhSachThuoc = relationship("ChiTietHoaDon", backref="hoaDon", lazy=True)
+    danhSachChiTiet = relationship("ChiTietHoaDon", backref="hoaDon", lazy=True)
 
     def __str__(self):
         return "Id phiếu khám bệnh: " + str(self.id_KhamBenh)
