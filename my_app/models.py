@@ -32,7 +32,8 @@ class BacSi(db.Model):
     id = Column(Integer, ForeignKey(User.id), primary_key=True)
     danhSachPhieuKham = relationship("PhieuKhamBenh", backref="bacSi", lazy=True)
 
-
+    def __str__(self):
+        return "Id bác sĩ: " + str(self.id)
 
 class Benh(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -105,7 +106,7 @@ class KhamBenh(db.Model):
     #hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
 
     def __str__(self):
-        return str(self.id) + " --- " + self.benhNhan.ten
+        return self.benhNhan.ten + ", khám ngày:" + str(self.ngayKham)
 
 class PhieuKhamBenh(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(KhamBenh.id), primary_key=True)
@@ -116,7 +117,7 @@ class PhieuKhamBenh(db.Model):
     donThuoc = relationship("DonThuoc", backref= "khamBenh", lazy=True)
 
     def __str__(self):
-        return str(self.id_KhamBenh) + "---" + str(self.id_Benh) + "---" + str(self.id_BacSi)
+        return "Id khám bệnh: " + str(self.id_KhamBenh) + ", Id bệnh: " + str(self.id_Benh) + ", Id bác sĩ: " + str(self.id_BacSi)
 
 
 class DonThuoc(db.Model):
@@ -126,7 +127,7 @@ class DonThuoc(db.Model):
     id_CachDung = Column(Integer, ForeignKey(CachDung.id), nullable=False)
 
     def __str__(self):
-        return str(self.id_KhamBenh) + "---" + str(self.id_Thuoc)
+        return "Id thuoc " + str(self.id_Thuoc)
 
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
@@ -134,7 +135,7 @@ class HoaDon(db.Model):
     danhSachThuoc = relationship("ChiTietHoaDon", backref="hoaDon", lazy=True)
 
     def __str__(self):
-        return str(self.id_KhamBenh) + "---" + str(self.total)
+        return "Id phiếu khám bệnh: " + str(self.id_KhamBenh)
 
 class ChiTietHoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(HoaDon.id_KhamBenh), primary_key=True)
@@ -143,7 +144,7 @@ class ChiTietHoaDon(db.Model):
     soLuong = Column(Integer, nullable=False)
 
     def __str__(self):
-        return str(self.id_KhamBenh) + "---" + str(self.gia) + "---" + str(self.soLuong)
+        return "Id khám bệnh: " + str(self.id_KhamBenh) + ", Id thuốc: " + str(self.id_Thuoc) + ", số lượng: " + str(self.soLuong)
 
 class DangKyOnline(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -165,7 +166,7 @@ class TamThoiLuuTru(db.Model):
     # nếu như bệnh nhân đang ở trong bảng TamThoiLuuTru nhưng trước đó đã từng đăng ký online thì sẽ lấy lần đăng ký
     # có thời gian đăng ký gần đây nhất
     def __str__(self):
-        return str(self.id) + "---" + str(self.trangThai)
+        return "Id đăng ký onl: " + str(self.id) + ", trạng thái: " + str(self.trangThai)
 
 
 if __name__ == "__main__":
