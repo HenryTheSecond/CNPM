@@ -5,6 +5,7 @@ from flask_login import LoginManager
 import os
 from dotenv import load_dotenv
 
+
 app = Flask(__name__)
 load_dotenv()
 db_username = os.getenv('DB_USERNAME')

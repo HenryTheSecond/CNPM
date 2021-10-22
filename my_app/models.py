@@ -13,6 +13,21 @@ class Role(db.Model):
     def __str__(self):
         return self.tenRole
 
+
+DonThuoc = db.Table("don_thuoc", db.Model.metadata,
+                    Column("id_KhamBenh", Integer, ForeignKey("PhieuKhamBenh.id_KhamBenh"), primary_key=True),
+                    Column("id_Thuoc", Integer, ForeignKey("Thuoc.id"), primary_key=True),
+                    Column("soLuong", Integer),
+                    Column("id_CachDung", Integer, ForeignKey("CachDung.id")))
+
+
+ChiTietHoaDon = db.Table("chi_tiet_hoa_don", db.Model.metadata
+                         ,Column("id_KhamBenh", Integer, ForeignKey("HoaDon.id_KhamBenh"), primary_key=True),
+                         Column("id_Thuoc", Integer, ForeignKey("Thuoc.id"), primary_key=True),
+                        Column("gia", Integer, nullable=False),
+                            Column("soLuong", Integer, nullable=False))
+
+
 class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), nullable=False, unique=True)
@@ -23,7 +38,7 @@ class User(db.Model, UserMixin):
     ngaySinh = Column(Date)
     soDT = Column(String(20))
     role_Id = Column(Integer, ForeignKey(Role.id), nullable=False)
-    danhSachBacSi = relationship("BacSi", backref="thongTin", lazy=True)
+    danhSachBacSi = relationship("BacSi", backref="thongTin", lazy=True, uselist=False)
 
     def __str__(self):
         return self.ten
@@ -44,9 +59,10 @@ class Benh(db.Model):
         return self.ten
 
 class CachDung(db.Model):
+    __tablename__ = "cach_dung"
     id = Column(Integer, primary_key=True, autoincrement=True)
     ten = Column(String(50), nullable=False)
-    danhSachDonThuoc = relationship("DonThuoc", backref="cachDung", lazy=True)
+    danhSachDonThuoc = relationship(DonThuoc, back_populates="cachDung", lazy=True)
 
     def __str__(self):
         return self.ten
@@ -64,8 +80,8 @@ class Thuoc(db.Model):
     tenThuoc = Column(String(50), nullable=False)
     id_DonVi = Column(Integer, ForeignKey(DonVi.id), nullable=False)
     gia = Column(Float, nullable=False)
-    danhSachHoaDon = relationship("ChiTietHoaDon", backref="thuoc", lazy=True)
-    danhSachDonThuoc = relationship("DonThuoc", backref="thuoc", lazy=True)
+    danhSachHoaDon = relationship("HoaDon", secondary=ChiTietHoaDon, backref='thuoc', lazy='subquery')
+    danhSachDonThuoc = relationship("PhieuKhamBenh",  secondary=DonThuoc, back_populates="thuoc", lazy='subquery')
 
     def __str__(self):
         return self.tenThuoc
@@ -101,7 +117,7 @@ class KhamBenh(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     id_BenhNhan = Column(Integer, ForeignKey(BenhNhan.id), nullable=False)
     ngayKham = Column(DateTime, default=datetime.now())
-    phieuKham = relationship("PhieuKhamBenh", backref="khamBenh", lazy=True)
+    phieuKham = relationship("PhieuKhamBenh", backref="khamBenh", lazy=True, uselist=False)
     #donThuoc = relationship("DonThuoc", backref="khamBenh", lazy=True)
     #hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
 
@@ -113,38 +129,25 @@ class PhieuKhamBenh(db.Model):
     trieuChung = Column(String(150))
     id_Benh = Column(Integer, ForeignKey(Benh.id))
     id_BacSi = Column(Integer, ForeignKey(BacSi.id), nullable=False)
-    hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
-    donThuoc = relationship("DonThuoc", backref= "khamBenh", lazy=True)
+    hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True, uselist=False)
+    donThuoc = relationship("Thuoc",  secondary="DonThuoc", backref= "phieuKham", lazy='subquery')
 
     def __str__(self):
         return "Id khám bệnh: " + str(self.id_KhamBenh) + ", Id bệnh: " + str(self.id_Benh) + ", Id bác sĩ: " + str(self.id_BacSi)
 
 
-class DonThuoc(db.Model):
-    id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
-    id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
-    soLuong = Column(Integer)
-    id_CachDung = Column(Integer, ForeignKey(CachDung.id), nullable=False)
 
-    def __str__(self):
-        return "Id thuoc " + str(self.id_Thuoc)
 
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
     total = Column(Float)
-    danhSachChiTiet = relationship("ChiTietHoaDon", backref="hoaDon", lazy=True)
+    danhSachChiTietThuoc = relationship("Thuoc", secondary="ChiTietHoaDon", backref="hoaDon", lazy='subquery')
 
     def __str__(self):
         return "Id phiếu khám bệnh: " + str(self.id_KhamBenh)
 
-class ChiTietHoaDon(db.Model):
-    id_KhamBenh = Column(Integer, ForeignKey(HoaDon.id_KhamBenh), primary_key=True)
-    id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
-    gia = Column(Float, nullable=False)
-    soLuong = Column(Integer, nullable=False)
 
-    def __str__(self):
-        return "Id khám bệnh: " + str(self.id_KhamBenh) + ", Id thuốc: " + str(self.id_Thuoc) + ", số lượng: " + str(self.soLuong)
+
 
 class DangKyOnline(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -153,7 +156,7 @@ class DangKyOnline(db.Model):
     ngayDangKy = Column(DateTime, default=datetime.now())
     ngayKhamDangKy = Column(DateTime, nullable=False)
     isKhamLanDau = Column(Boolean, default=False) # đánh dấu bệnh nhân đã từng khám ở bệnh viện
-    tamThoiLuu = relationship("TamThoiLuuTru", backref="dangKyOnline", lazy=True)
+    tamThoiLuu = relationship("TamThoiLuuTru", backref="dangKyOnline", lazy=True, uselist=False)
 
     def __str__(self):
         return str(self.ngayKhamDangKy) + "---" + str(self.ngayDangKy)  + "---" + str(self.id_BenhNhan) + "---" + str(self.isKhamLanDau)

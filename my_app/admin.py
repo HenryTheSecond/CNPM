@@ -1,5 +1,5 @@
 from flask_admin.contrib.sqla import ModelView
-from my_app.models import *
+from my_app.models import Role, User, BacSi, Benh, DonVi, Thuoc, SoBenhNhan, TienKham, BenhNhan, PhieuKhamBenh, HoaDon, DangKyOnline, TamThoiLuuTru, KhamBenh
 from my_app import db, admin
 from flask_admin import BaseView, expose
 from flask_login import logout_user, current_user
@@ -29,14 +29,14 @@ class BenhView(AuthenticatedView):
 class CachDungView(AuthenticatedView):
     pass
 
-class ChiTietHoaDonView(AuthenticatedView):
-    pass
+#class ChiTietHoaDonView(AuthenticatedView):
+#    pass
 
 class DangKyOnlineView(AuthenticatedView):
     can_create = False
 
-class DonThuocView(AuthenticatedView):
-    can_create = True;
+#class DonThuocView(AuthenticatedView):
+#   can_create = True;
 
 
 class DonViView(AuthenticatedView):
@@ -87,12 +87,12 @@ admin.add_view(BenhNhanView(BenhNhan, db.session, name="Bệnh Nhân"))
 admin.add_view(KhamBenhView(KhamBenh, db.session, name="Khám Bệnh"))
 admin.add_view(BenhView(Benh, db.session , name="Bệnh"))
 admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh"))
-admin.add_view(DonThuocView(DonThuoc, db.session , name="Đơn Thuốc"))
-admin.add_view(ChiTietHoaDonView(ChiTietHoaDon, db.session , name="Chi Tiết Hóa Đơn"))
+#admin.add_view(DonThuocView(DonThuoc, db.session , name="Đơn Thuốc"))
+#admin.add_view(ChiTietHoaDonView(ChiTietHoaDon, db.session , name="Chi Tiết Hóa Đơn"))
 admin.add_view(HoaDonView(HoaDon, db.session , name="Hóa Đơn"))
 #admin.add_view(BacSiView(BacSi, db.session, name="Bác Sĩ"))
 admin.add_view(ThuocView(Thuoc, db.session , name="Thuốc"))
-admin.add_view(CachDungView(CachDung, db.session , name="Cách Dùng"))
+#admin.add_view(CachDungView(CachDung, db.session , name="Cách Dùng"))
 admin.add_view(DonViView(DonVi, db.session , name="Đơn Vị"))
 admin.add_view(RoleView(Role, db.session , name="Role"))
 admin.add_view(TienKhamView(TienKham, db.session , name="Tiền Khám Bệnh"))
