@@ -31,11 +31,11 @@ class ChiTietHoaDonView(AuthenticatedView):
     pass
 
 class DangKyOnlineView(AuthenticatedView):
-    pass
+    can_create = False
 
 class DonThuocView(AuthenticatedView):
     can_create = True;
-    column_list = ('id_KhamBenh', 'id_Thuoc', 'Soluong', 'id_CachDung')
+
 
 class DonViView(AuthenticatedView):
     pass

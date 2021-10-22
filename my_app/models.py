@@ -63,8 +63,8 @@ class Thuoc(db.Model):
     tenThuoc = Column(String(50), nullable=False)
     id_DonVi = Column(Integer, ForeignKey(DonVi.id), nullable=False)
     gia = Column(Float, nullable=False)
-    danhSachThuocDaBan = relationship("ChiTietHoaDon", backref="thuoc", lazy=True)
-    danhSachThuocDaKeDon = relationship("DonThuoc", backref="thuoc", lazy=True)
+    danhSachHoaDon = relationship("ChiTietHoaDon", backref="thuoc", lazy=True)
+    danhSachDonThuoc = relationship("DonThuoc", backref="thuoc", lazy=True)
 
     def __str__(self):
         return self.tenThuoc
@@ -78,7 +78,7 @@ class SoBenhNhan(db.Model):
 
 class TienKham(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    gia = Column(Float, nullable=False, primary_key=True)
+    gia = Column(Float, nullable=False)
 
     def __str__(self):
         return self.gia
@@ -113,6 +113,7 @@ class PhieuKhamBenh(db.Model):
     id_Benh = Column(Integer, ForeignKey(Benh.id))
     id_BacSi = Column(Integer, ForeignKey(BacSi.id), nullable=False)
     hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True)
+    donThuoc = relationship("DonThuoc", backref= "khamBenh", lazy=True)
 
     def __str__(self):
         return str(self.id_KhamBenh) + "---" + str(self.id_Benh) + "---" + str(self.id_BacSi)
