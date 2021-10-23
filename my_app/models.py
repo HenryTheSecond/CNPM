@@ -1,6 +1,6 @@
 from my_app import db
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Boolean, DateTime, Date
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 from datetime import datetime
 
@@ -12,20 +12,6 @@ class Role(db.Model):
 
     def __str__(self):
         return self.tenRole
-
-
-DonThuoc = db.Table("don_thuoc", db.Model.metadata,
-                    Column("id_KhamBenh", Integer, ForeignKey("PhieuKhamBenh.id_KhamBenh"), primary_key=True),
-                    Column("id_Thuoc", Integer, ForeignKey("Thuoc.id"), primary_key=True),
-                    Column("soLuong", Integer),
-                    Column("id_CachDung", Integer, ForeignKey("CachDung.id")))
-
-
-ChiTietHoaDon = db.Table("chi_tiet_hoa_don", db.Model.metadata
-                         ,Column("id_KhamBenh", Integer, ForeignKey("HoaDon.id_KhamBenh"), primary_key=True),
-                         Column("id_Thuoc", Integer, ForeignKey("Thuoc.id"), primary_key=True),
-                        Column("gia", Integer, nullable=False),
-                            Column("soLuong", Integer, nullable=False))
 
 
 class User(db.Model, UserMixin):
@@ -59,10 +45,9 @@ class Benh(db.Model):
         return self.ten
 
 class CachDung(db.Model):
-    __tablename__ = "cach_dung"
     id = Column(Integer, primary_key=True, autoincrement=True)
     ten = Column(String(50), nullable=False)
-    danhSachDonThuoc = relationship(DonThuoc, back_populates="cachDung", lazy=True)
+    danhSachDonThuoc = relationship("DonThuoc", backref="cachDung", lazy=True)
 
     def __str__(self):
         return self.ten
@@ -80,8 +65,8 @@ class Thuoc(db.Model):
     tenThuoc = Column(String(50), nullable=False)
     id_DonVi = Column(Integer, ForeignKey(DonVi.id), nullable=False)
     gia = Column(Float, nullable=False)
-    danhSachHoaDon = relationship("HoaDon", secondary=ChiTietHoaDon, backref='thuoc', lazy='subquery')
-    danhSachDonThuoc = relationship("PhieuKhamBenh",  secondary=DonThuoc, back_populates="thuoc", lazy='subquery')
+    danhSachHoaDon = relationship("HoaDon", secondary="chi_tiet_hoa_don", backref='danhSachThuoc', lazy='subquery')
+    danhSachDonThuoc = relationship("PhieuKhamBenh",  secondary="don_thuoc", backref="danhSachThuoc", lazy='subquery')
 
     def __str__(self):
         return self.tenThuoc
@@ -130,7 +115,7 @@ class PhieuKhamBenh(db.Model):
     id_Benh = Column(Integer, ForeignKey(Benh.id))
     id_BacSi = Column(Integer, ForeignKey(BacSi.id), nullable=False)
     hoaDon = relationship("HoaDon", backref="khamBenh", lazy=True, uselist=False)
-    donThuoc = relationship("Thuoc",  secondary="DonThuoc", backref= "phieuKham", lazy='subquery')
+    donThuoc = relationship("Thuoc",  secondary="don_thuoc", backref= "phieuKham", lazy='subquery')
 
     def __str__(self):
         return "Id khám bệnh: " + str(self.id_KhamBenh) + ", Id bệnh: " + str(self.id_Benh) + ", Id bác sĩ: " + str(self.id_BacSi)
@@ -141,12 +126,28 @@ class PhieuKhamBenh(db.Model):
 class HoaDon(db.Model):
     id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
     total = Column(Float)
-    danhSachChiTietThuoc = relationship("Thuoc", secondary="ChiTietHoaDon", backref="hoaDon", lazy='subquery')
+    danhSachChiTietThuoc = relationship("Thuoc", secondary="chi_tiet_hoa_don", backref="hoaDon", lazy='subquery')
 
     def __str__(self):
         return "Id phiếu khám bệnh: " + str(self.id_KhamBenh)
 
 
+class DonThuoc(db.Model):
+    id_KhamBenh = Column(Integer, ForeignKey(PhieuKhamBenh.id_KhamBenh), primary_key=True)
+    id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
+    soLuong = Column(Integer)
+    id_CachDung = Column(Integer, ForeignKey(CachDung.id))
+    phieuKham = relationship(PhieuKhamBenh)
+    thuoc = relationship(Thuoc)
+
+
+class ChiTietHoaDon(db.Model):
+    id_KhamBenh = Column(Integer, ForeignKey(HoaDon.id_KhamBenh), primary_key=True)
+    id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
+    gia = Column(Integer, nullable=False)
+    soLuong = Column(Integer, nullable=False)
+    hoaDon = relationship(HoaDon)
+    thuoc = relationship(Thuoc)
 
 
 class DangKyOnline(db.Model):
