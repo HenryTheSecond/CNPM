@@ -1,15 +1,22 @@
 {% extends 'admin/master.html' %}
 
+{% block head_meta %}
+
+{{ super() }}
+<script src="{{ url_for('static',filename='js/script.js') }}"></script>
+
+{%endblock%}
+
 {% block body %}
 
-<form action="">
+<script src="{{ url_for('static',filename='js/script.js') }}"></script>
+
+
+<form>
   <label for="day">Chọn ngày xem doanh thu:</label><br>
   <input type="date" id="day" name="day">
-  <input type="submit" value="Xem" onclick="doanhThuNgay()">
+  <input type="button" value="Xem" onclick="doanhThuNgay()">
 </form>
-
-<span id="doanh-thu-ngay">AAAAA</span>
-
 
 
 
@@ -23,16 +30,14 @@
       <th scope="col">tổng tiền trên bill</th>
     </tr>
   </thead>
-  <tbody>
-  {% for item in hoa_don %}
-    <tr>
-      <td>ten benh nhan</td>
-      <td>ngay kham</td>
-      <td>tong tien</td>
-    </tr>
-  {% endfor %}
+
+  <tbody id="danh_sach_ngay">
+
   </tbody>
 </table>
+<span id="tong_tien"></span>
+
+
 
 <form action="">
   <label for="month">Chọn ngày tháng </label>

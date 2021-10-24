@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
     ngaySinh = Column(Date)
     soDT = Column(String(20))
     role_Id = Column(Integer, ForeignKey(Role.id), nullable=False)
-    danhSachBacSi = relationship("BacSi", backref="thongTin", lazy=True, uselist=False)
+    bacSi = relationship("BacSi", backref="thongTin", lazy=True, uselist=False)
 
     def __str__(self):
         return self.ten

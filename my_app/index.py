@@ -32,14 +32,15 @@ def login_exe():
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
 def doanh_thu_ngay(date):
-    doanhthu = db.session.query(func.sum(HoaDon.total))\
-    .join(PhieuKhamBenh, HoaDon.id_KhamBenh==PhieuKhamBenh.id_KhamBenh)\
-    .join(KhamBenh, PhieuKhamBenh.id_KhamBenh==KhamBenh.id_BenhNhan)\
-    .filter(KhamBenh.ngayKham==date).first()
 
-    return jsonify({
-        "doanh_thu_ngay": doanhthu[0]
-    })
+    danhSach = BenhNhan.query.join(KhamBenh, BenhNhan.id==KhamBenh.id_BenhNhan).filter(KhamBenh.ngayKham==date)\
+        .add_columns(KhamBenh.ngayKham, BenhNhan.ten)\
+    .join(PhieuKhamBenh, PhieuKhamBenh.id_KhamBenh==KhamBenh.id)\
+    .join(HoaDon, HoaDon.id_KhamBenh==PhieuKhamBenh.id_KhamBenh).add_columns(HoaDon.total)
+    res = []
+    for i in danhSach:
+        res.append({"ten": i[0].ten, "ngay_kham": i.ngayKham, "total": i.total})
+    return jsonify({"danh_sach": res})
 
 if __name__ == '__main__':
     app.run(debug=True)
