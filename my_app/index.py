@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, session, jsonify
-from my_app import app, my_login
+from my_app import app, my_login, db
 from my_app.models import User
 from admin import *
 import hashlib
@@ -41,6 +41,23 @@ def doanh_thu_ngay(date):
     for i in danhSach:
         res.append({"ten": i[0].ten, "ngay_kham": i.ngayKham, "total": i.total})
     return jsonify({"danh_sach": res})
+
+@app.route("/api/doanh-thu-thang/<int:month>-<int:year>", methods=['get'])
+def doanh_thu_thang(month, year):
+    metadata = db.MetaData()
+    kham_benh = db.Table('kham_benh', metadata, autoload=True, autoload_with=db.engine)
+    hoa_don = db.Table('hoa_don', metadata, autoload=True, autoload_with=db.engine)
+    queryDoanhThuThang = db.select([kham_benh.columns.ngayKham, db.func.sum(hoa_don.columns.total).label('doanh_thu_ngay')])\
+        .where(db.and_(db.func.month(kham_benh.columns.ngayKham) == month, db.func.year(kham_benh.columns.ngayKham) == year))\
+        .group_by(kham_benh.columns.ngayKham)
+    connection = db.engine.connect()
+    resultProxy = connection.execute(queryDoanhThuThang)
+    resultSet = resultProxy.fetchall()
+    data = []
+    for r in resultSet:
+        data.append({"ngay_kham": r[0], "doanh_thu_ngay":r[1]})
+    return jsonify({"doanh_thu_ngay": data})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

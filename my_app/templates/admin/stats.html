@@ -39,12 +39,12 @@
 
 
 
-<form action="">
+<form>
   <label for="month">Chọn ngày tháng </label>
   <input type="number" min="1" max="12" id="month" name="month" placeholder="tháng">
   <label for="year">năm:</label>
   <input type="number" min="2020" max="3000" id="year" name="year" value="2021">
-  <input type="submit" value="Xem">
+  <input type="button" value="Xem" onclick="doanhThuThang()">
 </form>
 <br>
 <table class="table table-dark">
@@ -54,14 +54,8 @@
       <th scope="col">tổng tiền trên ngày</th>
     </tr>
   </thead>
-  <tbody>
-  {% for item in hoa_don %}
-    <tr>
-      <td>ngay kham</td>
-      <td>tong tien ngay</td>
-    </tr>
-  {% endfor %}
+  <tbody id="danh_sach_thang">
   </tbody>
 </table>
-
+<span id="tong_tien_thang"></span>
 {% endblock %}
