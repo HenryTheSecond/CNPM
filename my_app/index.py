@@ -48,8 +48,10 @@ def doanh_thu_thang(month, year):
     kham_benh = db.Table('kham_benh', metadata, autoload=True, autoload_with=db.engine)
     hoa_don = db.Table('hoa_don', metadata, autoload=True, autoload_with=db.engine)
     queryDoanhThuThang = db.select([kham_benh.columns.ngayKham, db.func.sum(hoa_don.columns.total).label('doanh_thu_ngay')])\
+        .select_from(kham_benh.join(hoa_don, kham_benh.columns.id == hoa_don.columns.id_KhamBenh))\
         .where(db.and_(db.func.month(kham_benh.columns.ngayKham) == month, db.func.year(kham_benh.columns.ngayKham) == year))\
         .group_by(kham_benh.columns.ngayKham)
+    print(queryDoanhThuThang)
     connection = db.engine.connect()
     resultProxy = connection.execute(queryDoanhThuThang)
     resultSet = resultProxy.fetchall()
