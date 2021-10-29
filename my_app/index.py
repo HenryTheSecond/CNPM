@@ -7,6 +7,11 @@ from flask_login import login_user
 from sqlalchemy import func
 import utils
 
+from Y_ta.index import *
+from Bac_si.index import *
+from Thu_ngan.index import *
+
+
 @app.route("/")
 def home():
     return render_template("home.html")
