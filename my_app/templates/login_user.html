@@ -1,0 +1,8 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<h1 class="text-center text-danger">DANG NHAP</h1>
+<form action="/user-login" method="post">
+    {% include 'layout/login.html' %}
+</form>
+{% endblock %}

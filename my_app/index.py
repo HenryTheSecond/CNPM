@@ -6,6 +6,7 @@ import hashlib
 from flask_login import login_user
 from sqlalchemy import func
 import utils
+from nurse import *
 
 from Y_ta.index import *
 from Bac_si.index import *
@@ -33,6 +34,26 @@ def login_exe():
         login_user(user)
 
     return redirect("/admin")
+
+@app.route("/user-login", methods=['get', 'post'])
+def normal_user_login():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        password = str(hashlib.md5(password.encode("utf-8")).digest())
+        user = User.query.filter(User.username == username,
+                                 User.password == password).first()
+        if user:
+            login_user(user)
+
+        if user.role_Id == 2:
+            return redirect("/doctor")
+        elif user.role_Id == 3:
+            return redirect("/nurse")
+    else:
+        return render_template("login_user.html")
+
 
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
