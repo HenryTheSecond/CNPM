@@ -8,9 +8,7 @@ from sqlalchemy import func
 import utils
 from nurse import *
 
-from Y_ta.index import *
-from Bac_si.index import *
-from Thu_ngan.index import *
+
 
 
 @app.route("/")
@@ -55,6 +53,10 @@ def normal_user_login():
         return render_template("login_user.html")
 
 
+@app.route("/user-logout")
+def normal_user_logout():
+    logout_user()
+    return redirect("/user-login")
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
 def doanh_thu_ngay(date):
