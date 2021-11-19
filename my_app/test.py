@@ -1,6 +1,6 @@
 from models import *
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, cast, Date
 from my_app import db
 
 date = datetime(year=2021, month=10, day=23)
@@ -25,13 +25,13 @@ for i in a:
     temp.append({"ten":i[0].ten, "ngay_kham":i.ngayKham, "total":i.total})
 print(temp)'''
 
-a = Thuoc.query.filter(Thuoc.tenThuoc.like("%a%")).all()
+a = BenhNhan.query.join(KhamBenh, KhamBenh.id_BenhNhan==BenhNhan.id).\
+    join(PhieuKhamBenh, KhamBenh.id==PhieuKhamBenh.id_KhamBenh).join(Benh, Benh.id==PhieuKhamBenh.id_Benh).filter(Benh.ten.like("%" + "sốt" + "%"))
 
-print(a[0].danhSachHoaDon)
+a = BenhNhan.query.join(KhamBenh, KhamBenh.id_BenhNhan==BenhNhan.id).filter(cast(KhamBenh.ngayKham, Date)==datetime(year=2021, month=10, day=23))
 
-
-
-
+for item in a:
+    print(item.ten)
 
 
 

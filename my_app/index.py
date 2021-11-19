@@ -60,7 +60,7 @@ def normal_user_logout():
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
 def doanh_thu_ngay(date):
-    danhSach = BenhNhan.query.join(KhamBenh, BenhNhan.id==KhamBenh.id_BenhNhan).filter(KhamBenh.ngayKham==date)\
+    danhSach = BenhNhan.query.join(KhamBenh, BenhNhan.id==KhamBenh.id_BenhNhan).filter(cast(KhamBenh.ngayKham, Date)==date)\
         .add_columns(KhamBenh.ngayKham, BenhNhan.ten)\
     .join(PhieuKhamBenh, PhieuKhamBenh.id_KhamBenh==KhamBenh.id)\
     .join(HoaDon, HoaDon.id_KhamBenh==PhieuKhamBenh.id_KhamBenh).add_columns(HoaDon.total)

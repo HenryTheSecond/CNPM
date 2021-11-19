@@ -117,10 +117,27 @@ tr:nth-child(even) {
 
 
 <div id="benh_nhan" style="display: none">
+
+     <form>
+        <label class="radio-inline">
+          <input type="radio" id="tim_kiem_theo_ngay" name="tim_kiem_benh_nhan" onchange="radio_btn_changed()">Theo ngày
+        </label>
+        <label class="radio-inline">
+          <input type="radio" id="tim_kiem_theo_ten" name="tim_kiem_benh_nhan" onchange="radio_btn_changed()" checked>Theo tên
+        </label>
+        <label class="radio-inline">
+          <input type="radio" id="tim_kiem_theo_benh" name="tim_kiem_benh_nhan" onchange="radio_btn_changed()">Theo bệnh
+        </label>
+      </form>
+    <input type="date" id="ngay_tim_kiem" name="ngay_tim_kiem" style="display:none">
+    <input class="form-control mr-sm-2" name="tim_kiem_kw" type="text" placeholder="Nhap tu khoa...">
+    <button class="btn btn-success" onclick="tim_benh_nhan()">Tim</button>
+
     <table>
   <thead>
   <tr>
     <th>Id Bệnh nhân</th>
+    <th>Tên</th>
     <th>Giới tính</th>
     <th>Địa chỉ</th>
     <th>Ngày sinh</th>
@@ -155,6 +172,20 @@ tr:nth-child(even) {
     table.style.display = "block"
   }
 
+  function radio_btn_changed(){
+    if(document.getElementById("tim_kiem_theo_ngay").checked){
+        document.getElementById("ngay_tim_kiem").style.display = ""
+        document.getElementsByName("tim_kiem_kw")[0].style.display = "none"
+    }
+    else if(document.getElementById("tim_kiem_theo_ten").checked){
+        document.getElementById("ngay_tim_kiem").style.display = "none"
+        document.getElementsByName("tim_kiem_kw")[0].style.display = ""
+    }
+    else{
+        document.getElementById("ngay_tim_kiem").style.display = "none"
+        document.getElementsByName("tim_kiem_kw")[0].style.display = ""
+    }
+  }
 </script>
 
 </body>
