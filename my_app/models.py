@@ -65,6 +65,7 @@ class Thuoc(db.Model):
     tenThuoc = Column(String(50), nullable=False)
     id_DonVi = Column(Integer, ForeignKey(DonVi.id), nullable=False)
     gia = Column(Float, nullable=False)
+    soLuong = Column(Integer, nullable=False, default=0)
     danhSachHoaDon = relationship("HoaDon", secondary="chi_tiet_hoa_don", backref='danhSachThuoc', lazy='subquery')
     danhSachDonThuoc = relationship("PhieuKhamBenh",  secondary="don_thuoc", backref="danhSachThuoc", lazy='subquery')
 

@@ -7,7 +7,7 @@ from flask_login import login_user
 from sqlalchemy import func
 import utils
 from nurse import *
-
+from doctor import *
 
 
 
@@ -60,7 +60,6 @@ def normal_user_logout():
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
 def doanh_thu_ngay(date):
-
     danhSach = BenhNhan.query.join(KhamBenh, BenhNhan.id==KhamBenh.id_BenhNhan).filter(KhamBenh.ngayKham==date)\
         .add_columns(KhamBenh.ngayKham, BenhNhan.ten)\
     .join(PhieuKhamBenh, PhieuKhamBenh.id_KhamBenh==KhamBenh.id)\
