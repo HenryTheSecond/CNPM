@@ -36,3 +36,18 @@ def tim_benh_nhan():
     for i in danhSach:
         res.append({"id": i.id, "ten":i.ten, "gioi_tinh": i.gioiTinh, "dia_chi": i.diaChi, "ngay_sinh":i.ngaySinh, "SDT":i.soDT})
     return jsonify({"danh_sach": res})
+
+@app.route("/api/lich-su-kham-benh", methods=['get'])
+def lich_su_kham_benh():
+    id = request.args.get("id")
+    benh_nhan = BenhNhan.query.get(int(id))
+    res = []
+    for i in benh_nhan.cacLanKham:
+        don_thuoc = []
+        for item in i.phieuKham.don_thuoc:
+            don_thuoc.append({"ten": item.thuoc.tenThuoc, "so_luong": item.soLuong, "cach_dung": item.cachDung.ten})
+        res.append({"id": i.id, "ngay_kham": i.ngayKham, "trieu_chung": i.phieuKham.trieuChung,
+                    "benh": i.phieuKham.benh.ten, "bac_si": i.phieuKham.bacSi.thongTin.ten,
+                    "don_thuoc": don_thuoc})
+
+    return jsonify({"danh_sach": res})
