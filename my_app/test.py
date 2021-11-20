@@ -49,6 +49,7 @@ for i in a.cacLanKham:
 for i in res:
     print(i)
 
+print(Benh.query.all())
 
 
 

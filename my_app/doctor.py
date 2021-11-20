@@ -1,12 +1,15 @@
 from flask import render_template, request, redirect, session, jsonify
 from my_app import app, my_login, db
-from my_app.models import User, Thuoc, BenhNhan, KhamBenh, Benh, PhieuKhamBenh
+from my_app.models import User, Thuoc, BenhNhan, KhamBenh, Benh, PhieuKhamBenh, CachDung
 import utils
 from sqlalchemy import cast, Date
 
 @app.route('/doctor')
 def doctor_home():
-    return render_template("doctor/doctor_home.html")
+    benh = Benh.query.all()
+    thuoc = Thuoc.query.all()
+    cach_dung = CachDung.query.all()
+    return render_template("doctor/doctor_home.html", benh=benh, thuoc=thuoc, cach_dung=cach_dung)
 
 @app.route("/api/tim-thuoc", methods=['get'])
 def tim_thuoc():
@@ -51,3 +54,9 @@ def lich_su_kham_benh():
                     "don_thuoc": don_thuoc})
 
     return jsonify({"danh_sach": res})
+
+
+@app.route("/lap-phieu", methods = ['post'])
+def lap_phieu_kham_benh():
+    pass
+    #phieu_kham_benh = PhieuKhamBenh()
