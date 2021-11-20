@@ -32,13 +32,60 @@ function tim_benh_nhan(){
             cell = row.insertCell()
             cell.innerText = i.SDT
             cell = row.insertCell()
-            cell.innerHTML = `<a href="javascript:;" onclick="them_ds_kham(${i.id})">Thêm</a>`
+            cell.innerHTML = `<a href="/them-dskham?id=${i.id}" >Thêm</a>`
         }
     })
 }
 
-function them_ds_kham(id){
+function benh_nhan_info(){
+    document.getElementById("benh_nhan").style.display = "none";
+    document.getElementById("ds_kham").style.display = "none"
+    let table = document.getElementById("benh_nhan_info_form");
+    table.style.display = "block";
+}
 
+function benh_nhan_click(){
+    document.getElementById("benh_nhan_info_form").style.display = "none"
+    document.getElementById("ds_kham").style.display = "none"
+    let table = document.getElementById("benh_nhan")
+    table.style.display = "block"
+}
+
+
+function ds_kham_click(){
+   document.getElementById("benh_nhan").style.display = "none";
+   document.getElementById("benh_nhan_info_form").style.display = "none"
+   let table = document.getElementById("ds_kham");
+   table.style.display = "block";
+}
+
+function xem_ds_kham(){
+    let date = document.getElementById("day").value
+    fetch("api/xem-dskham" + "/" + date, {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            console.info(res)
+            return res.json()
+        }).then(function(data){
+            console.info(data)
+            let table = document.getElementById("ds_kham_table")
+            table.innerHTML = ""
+            let stt = 1;
+            for(i of data.danh_sach){
+                let row = table.insertRow()
+                let cell = row.insertCell()
+                cell.innerText = stt++;
+                cell = row.insertCell()
+                cell.innerText = i.ten
+                cell = row.insertCell()
+                cell.innerText = i.SDT
+                cell = row.insertCell()
+                cell.innerText = toDateString(i.ngay_kham)
+            }
+        })
 }
 
 function toDateString(dateString){

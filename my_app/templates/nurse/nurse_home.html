@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-
+<link href="{{ url_for('static',filename='nurse/css/style.css') }}" rel="stylesheet" type="text/css">
 
 <body>
 
@@ -30,24 +30,7 @@
 {% if current_user.is_authenticated and current_user.role_Id ==3  %}
 
 
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-</style>
 <!-- Modal -->
 <div id="id01" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-top">
@@ -88,7 +71,7 @@ tr:nth-child(even) {
 </button>
 
 
-<button onclick="benh_nhan_info()" class="w3-third">
+<button class="w3-third">
   <div class="w3-card w3-container" style="min-height:250px">
   <h3>Duyệt lịch đặt</h3><br>
  <i class="fa fa-plus-square w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
@@ -96,7 +79,7 @@ tr:nth-child(even) {
 </button>
 
 
-<button class="w3-third">
+<button onclick="ds_kham_click()" class="w3-third">
   <div class="w3-card w3-container" style="min-height:250px">
   <h3>Lập danh sách khám bệnh</h3><br>
   <i class="fa fa-plus-square w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
@@ -182,27 +165,36 @@ tr:nth-child(even) {
 </div>
 
 
+<div id="ds_kham" style="display: none">
+
+<form>
+  <label for="day">Chọn ngày xem danh sách khám:</label><br>
+  <input type="date" id="day" name="day">
+  <input type="button" value="Xem" onclick="xem_ds_kham()">
+</form>
+
+<br>
+    <table>
+  <thead>
+  <tr>
+    <th>STT</th>
+    <th>Tên</th>
+    <th>Số điện thoại</th>
+    <th>Ngày khám</th>
+  </tr>
+  </thead>
+
+   <tbody id="ds_kham_table">
+  </tbody>
+</table>
+</div>
+
 
 
 
 {%else%}
 <h1>Bạn không thể truy cập trang này</h1>
 {%endif%}
-
-<script>
-  function benh_nhan_info(){
-    document.getElementById("benh_nhan").style.display = "none";
-    let table = document.getElementById("benh_nhan_info_form");
-    table.style.display = "block";
-  }
-
-  function benh_nhan_click(){
-    document.getElementById("benh_nhan_info_form").style.display = "none"
-    let table = document.getElementById("benh_nhan")
-    table.style.display = "block"
-  }
-
-</script>
 
 </body>
 </html>
