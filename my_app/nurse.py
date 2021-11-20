@@ -9,7 +9,7 @@ from sqlalchemy import cast, Date
 
 @app.route('/nurse')
 def nurse_home():
-    return render_template("nurse_home.html")
+    return render_template("nurse/nurse_home.html")
 
 @app.route('/add-victim', methods=["get"])
 def add_victim():

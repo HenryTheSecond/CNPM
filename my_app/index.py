@@ -8,7 +8,7 @@ from sqlalchemy import func
 import utils
 from nurse import *
 from doctor import *
-
+from cashier import *
 
 
 @app.route("/")
@@ -49,6 +49,8 @@ def normal_user_login():
             return redirect("/doctor")
         elif user.role_Id == 3:
             return redirect("/nurse")
+        elif user.role_Id == 4:
+            return redirect("/cashier")
     else:
         return render_template("login_user.html")
 
