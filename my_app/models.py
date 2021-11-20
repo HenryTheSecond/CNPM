@@ -138,8 +138,8 @@ class DonThuoc(db.Model):
     id_Thuoc = Column(Integer, ForeignKey(Thuoc.id), primary_key=True)
     soLuong = Column(Integer)
     id_CachDung = Column(Integer, ForeignKey(CachDung.id))
-    phieuKham = relationship(PhieuKhamBenh)
-    thuoc = relationship(Thuoc)
+    phieuKham = relationship(PhieuKhamBenh, backref=backref('don_thuoc', passive_deletes='all'))
+    thuoc = relationship(Thuoc, backref=backref('don_thuoc', passive_deletes='all'))
 
 
 class ChiTietHoaDon(db.Model):
