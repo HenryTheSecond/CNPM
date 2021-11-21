@@ -11,7 +11,7 @@ from sqlalchemy import cast, Date
 def nurse_home():
     return render_template("nurse/nurse_home.html")
 
-@app.route('/add-victim', methods=["get"])
+@app.route('/add-victim', methods=["post"])
 def add_victim():
     name = request.form.get("name")
     gender = request.form.get("gender")

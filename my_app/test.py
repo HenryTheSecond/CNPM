@@ -33,11 +33,11 @@ a = BenhNhan.query.join(KhamBenh, KhamBenh.id_BenhNhan==BenhNhan.id).filter(cast
 for item in a:
     print(item.ten)'''
 
-a = BenhNhan.query.get(1)
+#a = BenhNhan.query.get(1)
 
 #print(a.cacLanKham)
 
-res = []
+'''res = []
 for i in a.cacLanKham:
     don_thuoc = []
     for item in i.phieuKham.don_thuoc:
@@ -49,7 +49,12 @@ for i in a.cacLanKham:
 for i in res:
     print(i)
 
-print(Benh.query.all())
+print(Benh.query.all())'''
+
+a = KhamBenh.query.filter(KhamBenh.id_BenhNhan == 1).filter(cast(KhamBenh.ngayKham, Date) == datetime.now().date()).first()
+print(a.ngayKham)
+
+
 
 
 

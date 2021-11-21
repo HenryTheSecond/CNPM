@@ -161,6 +161,43 @@
 
 
 
+<div id="lap_phieu_hoa_don" style="display: none">
+
+
+
+
+    <form action="lap-phieu" method="post" class="container">
+      <div class="form-group">
+        <label for="id_kham_benh">ID khám bệnh:</label>
+        <span id="id_kham_benh"></span>
+
+      </div>
+
+
+  <div id="don_thuoc">
+      <div name="don_thuoc">
+      <label>Thuốc:</label>
+      <select class="hoa_don">
+      {% for t in thuoc %}
+        <option value="{{t.id}}">{{t.tenThuoc}}</option>
+      {%endfor%}
+      </select>
+
+      <label>Giá:</label>
+      <input type="number" class="hoa_don" placeholder="Nhập giá" required>
+
+      <label>Số lượng:</label>
+      <input type="number" class="hoa_don" placeholder="Số lượng" required>
+      </div>
+  </div>
+        <br>
+    <div class="btn btn-success" onclick="them_thuoc_click()">Thêm thuốc</div>
+     <br>
+     <br>
+    <div class="btn btn-primary" onclick="lap_hoa_don()">Thêm</div>
+</form>
+
+</div>
 
 
 
