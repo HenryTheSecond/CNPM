@@ -24,13 +24,17 @@ function lap_hoa_don_click(){
             for(i of data.danh_sach){
                 let row = table.insertRow()
                 let cell = row.insertCell()
-                cell.innerText = stt++;
+                cell.innerText = i.kham_benh_id
                 cell = row.insertCell()
-                cell.innerText = i.ten
+                cell.innerText = i.ten_benh_nhan
                 cell = row.insertCell()
-                cell.innerText = i.SDT
+                cell.innerText = i.trieu_chung
+                cell = row.insertCell()
+                cell.innerText = i.ten_benh
                 cell = row.insertCell()
                 cell.innerText = toDateString(i.ngay_kham)
+                cell = row.insertCell()
+                cell.innerHTML = `<a href="#" >Chọn</a>`
             }
         })
 }
