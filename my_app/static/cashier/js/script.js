@@ -57,8 +57,8 @@ function them_thuoc_click(thuoc){
     console.log(clone)
 }
 
-function create_bill_id(id_kham_benh) {
-    fetch("/api/create-bill-id" + "/" + id_kham_benh, {
+async function create_bill_id(id_kham_benh) {
+    await fetch("/api/create-bill-id" + "/" + id_kham_benh, {
         method: 'get',
         headers: {
             "Content-Type": "application/json"
@@ -71,8 +71,8 @@ function create_bill_id(id_kham_benh) {
     })
 }
 
-function create_bill_total(id_kham_benh) {
-    fetch("/api/create-bill-total" + "/" + id_kham_benh, {
+async function create_bill_total(id_kham_benh) {
+    await fetch("/api/create-bill-total" + "/" + id_kham_benh, {
         method: 'get',
         headers: {
             "Content-Type": "application/json"
@@ -86,8 +86,8 @@ function create_bill_total(id_kham_benh) {
 }
 
 
-function create_bill(id_kham_benh, id_thuoc, gia, so_luong) {
-    fetch("/api/create-bill", {
+async function create_bill(id_kham_benh, id_thuoc, gia, so_luong) {
+    await fetch("/api/create-bill", {
         method: 'post',
         body: JSON.stringify({
             "id_kham_benh": id_kham_benh,

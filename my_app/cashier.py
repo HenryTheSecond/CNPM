@@ -17,6 +17,7 @@ def ds_phieu():
     danhSach = PhieuKhamBenh.query.join(KhamBenh, PhieuKhamBenh.id_KhamBenh==KhamBenh.id) \
         .join(BenhNhan, KhamBenh.id_BenhNhan==BenhNhan.id)\
         .join(Benh, PhieuKhamBenh.id_Benh==Benh.id)\
+        .filter(PhieuKhamBenh.id_KhamBenh.not_in(db.session.query(HoaDon.id_KhamBenh)))\
         .add_columns(KhamBenh.id, BenhNhan.ten, PhieuKhamBenh.trieuChung, KhamBenh.ngayKham, Benh.ten.label('ten_benh'))
 
     res = []
