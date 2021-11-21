@@ -199,19 +199,19 @@
   <div id="don_thuoc">
       <div name="don_thuoc">
       <label for="thuoc">Thuốc:</label>
-      <select>
+      <select name="don_thuoc_chi_tiet">
       {% for t in thuoc %}
         <option value="{{t.id}}" >{{t.tenThuoc}}</option>
       {%endfor%}
       </select>
 
-      <select>
+      <select name="cach_dung">
       {% for c in cach_dung %}
         <option value="{{c.id}}" >{{c.ten}}</option>
       {%endfor%}
       </select>
 
-      <input type="text" class="" placeholder="Số lượng">
+      <input name="so_luong" type="text" class="" placeholder="Số lượng">
       </div>
   </div>
         <br>
