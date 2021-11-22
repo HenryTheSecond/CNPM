@@ -79,6 +79,36 @@ def create_bill_total(id_kham_benh):
         "error_code": 200
     })
 
+@app.route('/api/update-soluong-thuoc/', methods=["put"])
+def update_soluong_thuoc():
+    data = request.json
+    so_luong_cu = Thuoc.query.filter(Thuoc.id == data['thuoc_id']).first().soLuong
+    if (data['so_luong'] <= so_luong_cu):
+        so_luong_moi = so_luong_cu - data['so_luong']
+        stmt = (
+            update(Thuoc).
+                where(Thuoc.id == data['thuoc_id']).
+                values(soLuong=so_luong_moi)
+        )
+        connection = db.engine.connect()
+        connection.execute(stmt)
+        return jsonify({
+            "error_code": 200
+        })
+    else:
+        return jsonify({
+            "error_code": 500
+        })
 
 
-
+# @app.route('/api/check-soluong-thuoc/<id_thuoc>-<so_luong>', methods=["get"])
+# def check_soluong_thuoc(id_thuoc, so_luong):
+#     so_luong_cu = Thuoc.query.filter(Thuoc.id == id_thuoc).first().soLuong
+#     if (int(so_luong) <= so_luong_cu):
+#         return jsonify({
+#             "error_code": 200
+#         })
+#     else:
+#         return jsonify({
+#             "error_code": 500
+#         })

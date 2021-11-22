@@ -82,6 +82,7 @@ async function create_bill_total(id_kham_benh) {
         return res.json()
     }).then(function(data) {
         console.info(data)
+        alert("thoanh toán thành công")
     })
 }
 
@@ -113,6 +114,7 @@ async function lap_hoa_don(){
     await create_bill_id(id)
     var i
     for (i = 0; i < chi_tiet_hoa_don.length; i+=3) {
+        await updateThuoc(chi_tiet_hoa_don[i].value, chi_tiet_hoa_don[i+2].value)
         await create_bill(id, chi_tiet_hoa_don[i].value, chi_tiet_hoa_don[i+1].value, chi_tiet_hoa_don[i+2].value)
     }
 
@@ -124,3 +126,37 @@ function toDateString(dateString){
     let date = new Date(dateString)
     return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
 }
+
+async function updateThuoc(thuoc_id, so_luong) {
+    await fetch("/api/update-soluong-thuoc/", {
+        method: "put",
+        body: JSON.stringify({
+            "thuoc_id": parseInt(thuoc_id),
+            "so_luong": parseInt(so_luong)
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function(res) {
+        return res.json()
+    }).then(function(data){
+        if (data.error_code == 500){
+            alert("Không đủ thuốc")
+        }
+    })
+}
+
+
+
+//async function checkThuoc(thuoc_id, so_luong) {
+//    await fetch("/api/check-soluong-thuoc/" + thuoc_id + "-" + so_luong, {
+//        method: "get",
+//        headers: {
+//            "Content-Type": "application/json"
+//        }
+//    }).then(function(res) {
+//        return res.json()
+//    }).then(function(data){
+//        console.log(data)
+//    })
+//}

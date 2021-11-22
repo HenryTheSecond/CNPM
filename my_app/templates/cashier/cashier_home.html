@@ -181,8 +181,12 @@
       {%endfor%}
       </select>
 
-      <label>Giá:</label>
-      <input type="number" class="hoa_don" placeholder="Nhập giá" required>
+       <label>Giá:</label>
+       <select class="hoa_don">
+      {% for t in thuoc %}
+        <option value="{{t.gia}}">{{t.gia}}</option>
+      {%endfor%}
+      </select>
 
       <label>Số lượng:</label>
       <input type="number" class="hoa_don" placeholder="Số lượng" required>
@@ -192,7 +196,8 @@
     <div class="btn btn-success" onclick="them_thuoc_click()">Thêm thuốc</div>
      <br>
      <br>
-    <div class="btn btn-primary" onclick="lap_hoa_don()">Thêm</div>
+    <div class="btn btn-primary" onclick="lap_hoa_don()">Thanh toán tiền mặt</div>
+    <input type="submit" class="btn btn-danger" value="Thanh toán momo"/>
 </form>
 
 </div>
