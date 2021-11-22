@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
 <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet" type="text/css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+
+
 <body>
 
 <!-- Side Navigation -->
@@ -164,7 +169,7 @@
 <div id="lap_phieu_hoa_don" style="display: none">
 
 
-    <form action="lap-phieu" method="post" class="container">
+    <form action="thanh-toan-momo" method="post" class="container">
       <div class="form-group">
         <label for="id_kham_benh">ID khám bệnh:</label>
         <span id="id_kham_benh"></span>
@@ -197,7 +202,7 @@
      <br>
      <br>
     <div class="btn btn-primary" onclick="lap_hoa_don()">Thanh toán tiền mặt</div>
-    <input type="submit" class="btn btn-danger" value="Thanh toán momo"/>
+        <div  class="btn btn-danger" onclick="thanh_toan_momo()"> Thanh toán momo </div>
 </form>
 
 </div>

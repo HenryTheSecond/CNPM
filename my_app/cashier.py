@@ -100,6 +100,10 @@ def update_soluong_thuoc():
             "error_code": 500
         })
 
+@app.route("/thanh-toan-momo", methods=['post'])
+def lap_phieu_momo():
+    return("hello momo page")
+
 
 # @app.route('/api/check-soluong-thuoc/<id_thuoc>-<so_luong>', methods=["get"])
 # def check_soluong_thuoc(id_thuoc, so_luong):

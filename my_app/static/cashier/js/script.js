@@ -147,6 +147,15 @@ async function updateThuoc(thuoc_id, so_luong) {
 }
 
 
+function thanh_toan_momo(){
+
+
+    var timestamp = new Date().valueOf()
+    var requestId = "tuyen" + timestamp
+    data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=voz.vn&orderId=abcd&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=voz.vn&requestId=abcd&requestType=captureWallet"
+    signature = CryptoJS.HmacSHA256(data, "srorZC05FI40gRaEPYCMJjFKDGjtf4BM").toString(CryptoJS.enc.Hex)
+    console.log(signature)
+}
 
 //async function checkThuoc(thuoc_id, so_luong) {
 //    await fetch("/api/check-soluong-thuoc/" + thuoc_id + "-" + so_luong, {
