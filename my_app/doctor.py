@@ -65,17 +65,15 @@ def lap_phieu_kham_benh():
     chi_tiet = request.form.getlist("don_thuoc_chi_tiet")
     cach_dung = request.form.getlist("cach_dung")
     so_luong = request.form.getlist("so_luong")
-    print(chi_tiet)
-    print(cach_dung)
-    print(so_luong)
     id_kham_benh = request.form.get("id")
     trieu_chung = request.form.get("trieu_chung")
     benh = request.form.get("benh")
     phieu_kham_benh = PhieuKhamBenh(id_KhamBenh=id_kham_benh, trieuChung=trieu_chung, id_Benh=int(benh), id_BacSi= current_user.id )
     db.session.add(phieu_kham_benh)
     for i in range(0, len(chi_tiet)):
-        don_thuoc = DonThuoc(id_KhamBenh=id_kham_benh, id_Thuoc=chi_tiet[i], soLuong=so_luong[i], id_CachDung=cach_dung[i])
-        db.session.add(don_thuoc)
+        if(so_luong[i] !='0' and so_luong[i]!=''):
+            don_thuoc = DonThuoc(id_KhamBenh=id_kham_benh, id_Thuoc=chi_tiet[i], soLuong=so_luong[i], id_CachDung=cach_dung[i])
+            db.session.add(don_thuoc)
     db.session.commit()
     return redirect("/doctor")
 
