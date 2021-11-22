@@ -51,11 +51,29 @@ for i in res:
 
 print(Benh.query.all())'''
 
-a = KhamBenh.query.filter(KhamBenh.id_BenhNhan == 1).filter(cast(KhamBenh.ngayKham, Date) == datetime.now().date()).first()
-print(a.ngayKham)
+#a = KhamBenh.query.filter(KhamBenh.id_BenhNhan == 1).filter(cast(KhamBenh.ngayKham, Date) == datetime.now().date()).first()
+#print(a.ngayKham)
+
+
+'''danhSach = BenhNhan.query.join(KhamBenh, KhamBenh.id_BenhNhan == BenhNhan.id).filter(BenhNhan.ten.like("%" + "tuy" + "%")).\
+            filter(cast(KhamBenh.ngayKham, Date)==datetime.now().date()).add_columns(KhamBenh.id).all()
 
 
 
 
+for i in danhSach:
+    print(i.ten)'''
 
 
+benh_nhan = BenhNhan.query.get(int('1'))
+res = []
+for i in benh_nhan.cacLanKham:
+        don_thuoc = []
+        for item in i.phieuKham.don_thuoc:
+            don_thuoc.append({"ten": item.thuoc.tenThuoc, "so_luong": item.soLuong, "cach_dung": item.cachDung.ten})
+        res.append({"id": i.id, "ngay_kham": i.ngayKham, "trieu_chung": i.phieuKham.trieuChung,
+                    "benh": i.phieuKham.benh.ten, "bac_si": i.phieuKham.bacSi.thongTin.ten,
+                    "don_thuoc": don_thuoc})
+
+
+print(res)

@@ -95,7 +95,7 @@ function tim_benh_nhan(){
 
 function lap_phieu_tim_benh_nhan(){
     var kw = document.getElementsByName("tim_kiem_kw")[1].value
-    fetch("api/tim-benh-nhan?type=tim_kiem_theo_ten" + "&kw=" + kw,{
+    fetch("api/tim-benh-nhan-kham-benh?" + "&kw=" + kw,{
         method: "get",
         headers: {
             "Content-Type": "application/json"
@@ -108,6 +108,8 @@ function lap_phieu_tim_benh_nhan(){
         for(i of data.danh_sach){
             let row = table.insertRow()
             let cell = row.insertCell()
+            cell.innerText = i.id_kham_benh
+            cell = row.insertCell()
             cell.innerText = i.id
             cell = row.insertCell()
             cell.innerText = i.ten

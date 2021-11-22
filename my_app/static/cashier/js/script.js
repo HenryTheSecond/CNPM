@@ -118,3 +118,9 @@ async function lap_hoa_don(){
 
     await create_bill_total(id)
 }
+
+
+function toDateString(dateString){
+    let date = new Date(dateString)
+    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+}
