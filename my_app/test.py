@@ -65,7 +65,7 @@ for i in danhSach:
     print(i.ten)'''
 
 
-benh_nhan = BenhNhan.query.get(int('1'))
+'''benh_nhan = BenhNhan.query.get(int('1'))
 res = []
 for i in benh_nhan.cacLanKham:
         don_thuoc = []
@@ -76,4 +76,7 @@ for i in benh_nhan.cacLanKham:
                     "don_thuoc": don_thuoc})
 
 
-print(res)
+print(res)'''
+
+a = TienKham.query.first()
+print(a.gia)

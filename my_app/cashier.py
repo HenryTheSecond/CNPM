@@ -66,7 +66,7 @@ def create_bill_total(id_kham_benh):
     tong = 0
     for i in danhSach:
         tong += i.gia * i.soLuong
-    tong += 30000
+    tong += TienKham.query.first().gia
 
     stmt = (
         update(HoaDon).
