@@ -20,18 +20,63 @@ def home():
 def user_load(user_id):
     return User.query.get(user_id)
 
-@app.route("/login", methods=['post'])
+
+@app.route('/dang-ki-online', methods=['get', 'post'])
+def dang_ki_online():
+    if(request.method == "POST"):
+        SDT = request.form.get("SDT")
+        ngay_kham = request.form.get("ngay_kham")
+        if(request.form.get("da_tung_kham_chua") == 'chua_kham'):
+            ten = request.form.get("ten")
+            gender = request.form.get("gender")
+            dia_chi = request.form.get("dia_chi")
+            ngay_sinh = request.form.get("ngay_sinh")
+            thoi_gian_dang_ky = datetime.now()
+            benh_nhan = BenhNhan(ten=ten, gioiTinh=gender, diaChi=dia_chi, ngaySinh=ngay_sinh, soDT=SDT)
+            db.session.add(benh_nhan)
+            db.session.commit()
+            dang_ky = DangKyOnline(id_BenhNhan=benh_nhan.id, soDT=SDT, ngayDangKy=datetime.now(), ngayKhamDangKy=ngay_kham, isKhamLanDau=True)
+            db.session.add(dang_ky)
+            db.session.commit()
+            tam_thoi_luu_tru = TamThoiLuuTru(id = dang_ky.id, trangThai=True)
+            db.session.add(tam_thoi_luu_tru)
+        else:
+            id_benh_nhan = request.form.get("id")
+            dang_ky = DangKyOnline(id_BenhNhan=int(id_benh_nhan), soDT=SDT, ngayDangKy=datetime.now(),
+                                   ngayKhamDangKy=ngay_kham, isKhamLanDau=False)
+            db.session.add(dang_ky)
+            db.session.commit()
+            tam_thoi_luu_tru = TamThoiLuuTru(id=dang_ky.id, trangThai=True)
+            db.session.add(tam_thoi_luu_tru)
+        db.session.commit()
+        return render_template('layout/login.html', msg="Đăng kí online thành công")
+    return render_template("dk_online/dk_online.html")
+
+@app.route("/login", methods=['post', 'get'])
 def login_exe():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    msg = ""
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    password = str(hashlib.md5(password.encode("utf-8")).digest())
-    user = User.query.filter(User.username == username,
-                             User.password == password).first()
-    if user:
-        login_user(user)
+        password = str(hashlib.md5(password.encode("utf-8")).digest())
+        user = User.query.filter(User.username == username,
+                                 User.password == password).first()
+        if user:
+            login_user(user)
+            if user.role_Id == 1:
+                return redirect("/admin")
+            elif user.role_Id == 2:
+                return redirect("/doctor")
+            elif user.role_Id == 3:
+                return redirect("/nurse")
+            elif user.role_Id == 4:
+                return redirect("/cashier")
+        else:
+            msg = "Sai tài khoản hoặc mật khẩu"
 
-    return redirect("/admin")
+    return render_template('layout/login.html', msg = msg)
+
 
 @app.route("/user-login", methods=['get', 'post'])
 def normal_user_login():
@@ -58,7 +103,7 @@ def normal_user_login():
 @app.route("/user-logout")
 def normal_user_logout():
     logout_user()
-    return redirect("/user-login")
+    return redirect("/login")
 
 @app.route("/api/doanh-thu-ngay/<date>", methods=['get'])
 def doanh_thu_ngay(date):
@@ -88,6 +133,7 @@ def doanh_thu_thang(month, year):
     for r in resultSet:
         data.append({"ngay_kham": r[0], "doanh_thu_ngay":r[1]})
     return jsonify({"doanh_thu_ngay": data})
+
 
 
 if __name__ == '__main__':

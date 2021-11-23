@@ -78,5 +78,9 @@ for i in benh_nhan.cacLanKham:
 
 print(res)'''
 
-a = TienKham.query.first()
-print(a.gia)
+dang_ky = DangKyOnline(id_BenhNhan=int(1), soDT='1234', ngayDangKy=datetime.now(),
+                                   ngayKhamDangKy=datetime.now(), isKhamLanDau=True)
+
+db.session.add(dang_ky)
+db.session.commit()
+print(dang_ky.id)

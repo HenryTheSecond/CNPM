@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: pink;
+}
+.container {
+    padding: 50px;
+  background-color: lightblue;
+}
+
+input[type=text], input[type=password], textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: orange;
+  outline: none;
+}
+ div {
+            padding: 10px 0;
+         }
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+<form action="/dang-ki-online" method="post">
+  <div class="container">
+  <center>  <h1> Đăng ký online</h1> </center>
+  <hr>
+
+
+<input type="radio" id="da_kham" name="da_tung_kham_chua" value="da_kham" onchange="check_changed()">
+<label for="da_kham">Đã từng khám</label><br>
+<input type="radio" id="chua_kham" name="da_tung_kham_chua" value="chua_kham" onchange="check_changed()" checked>
+<label for="chua_kham">Chưa khám</label><br>
+
+      <br><br>
+
+
+<label> Số điện thoại: </label>
+<input id="SDT" type="text" name="SDT" placeholder="Số điện thoại" size="15" required />
+
+<div id="da_kham_block" style="display:none">
+    <label> ID bệnh nhân: </label>
+    <input id="id" type="text" name="id" placeholder="ID bệnh nhân" size="15"/>
+</div>
+
+<div id="chua_kham_block">
+    <label> Tên bệnh nhân: </label>
+    <input id="ten" type="text" name="ten" placeholder="Tên bệnh nhân" size="15"/>
+
+    <div>
+        <label>
+        Gender :
+        </label><br>
+        <input type="radio" value="nam" name="gender" checked > Nam
+        <input type="radio" value="nu" name="gender"> Nữ
+    </div>
+
+    <label> Địa chỉ: </label>
+    <input id="dia_chi" type="text" name="dia_chi" placeholder="Địa chỉ" size="15"/>
+
+    <label for="ngay_sinh">Ngày sinh:</label>
+    <input type="date" class="form-control"  id="ngay_sinh" name="ngay_sinh">
+
+</div>
+
+      <label for="ngay_kham">Ngày khám:</label>
+    <input type="datetime-local" class="form-control"  id="ngay_kham" name="ngay_kham">
+
+
+
+</div>
+
+
+    <button type="submit" class="registerbtn">Register</button>
+
+
+    <script>
+        function check_changed(){
+            if(document.getElementById("da_kham").checked){
+                document.getElementById("da_kham_block").style.display = "block"
+                document.getElementById("chua_kham_block").style.display = "none"
+            }
+            else{
+                document.getElementById("da_kham_block").style.display = "none"
+                document.getElementById("chua_kham_block").style.display = "block"
+            }
+        }
+    </script>
+</form>
+
+</body>
+</html>

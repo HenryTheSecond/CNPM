@@ -21,15 +21,8 @@
 <script src="{{ url_for('static',filename='cashier/js/script.js') }}"></script>
 
 <!-- Header -->
-<div class="w3-container w3-theme w3-padding" id="myHeader">
-  <div class="w3-center">
-  <h4>BEAUTIFUL RESPONSIVE WEB SITES</h4>
-  <h1 class="w3-xxxlarge w3-animate-bottom">BUILT WITH W3.CSS</h1>
-    <div class="w3-padding-32">
-      <button class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">LEARN W3.CSS</button>
-    </div>
-  </div>
-</div>
+
+{%include 'layout/header.html'%}
 
 
 {% if current_user.is_authenticated and current_user.role_Id ==4  %}

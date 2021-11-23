@@ -4,9 +4,10 @@ from flask_admin import Admin
 from flask_login import LoginManager
 import os
 from dotenv import load_dotenv
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 load_dotenv()
 db_username = os.getenv('DB_USERNAME')
 db_password = os.getenv('DB_PASSWORD')

@@ -1,4 +1,13 @@
- <div class="form-group">
+{% extends 'layout/base.html' %}
+
+{% block content %}
+{%if msg%}
+    <h4 class="text-center text-danger" >{{msg}}</h4>
+{%endif%}
+
+<h1 class="text-center text-success">ĐĂNG NHẬP</h1>
+<form action="/login" method="post">
+<div class="form-group">
     <label for="username">Username:</label>
     <input type="text" name="username" class="form-control" placeholder="Nhap username" id="username">
   </div>
@@ -8,3 +17,7 @@
   </div>
 
   <button type="submit" class="btn btn-primary">Dang nhap</button>
+    <a href="/dang-ki-online" >Bệnh nhân đăng kí online</a>
+</form>
+<br>
+{% endblock %}
