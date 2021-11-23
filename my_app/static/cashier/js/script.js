@@ -148,13 +148,42 @@ async function updateThuoc(thuoc_id, so_luong) {
 
 
 function thanh_toan_momo(){
-
-
     var timestamp = new Date().valueOf()
     var requestId = "tuyen" + timestamp
-    data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=voz.vn&orderId=abcd&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=voz.vn&requestId=abcd&requestType=captureWallet"
+    data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=voz.vn&orderId=" + requestId  +  "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=voz.vn&requestId=" + requestId  +  "&requestType=captureWallet"
     signature = CryptoJS.HmacSHA256(data, "srorZC05FI40gRaEPYCMJjFKDGjtf4BM").toString(CryptoJS.enc.Hex)
+    console.log(requestId)
     console.log(signature)
+    fetch("https://test-payment.momo.vn/v2/gateway/api/create",{
+        mode: 'cors',
+        credentials: 'include',
+        method: "post",
+        body: JSON.stringify({
+            "partnerCode": "MOMOFIF820211121",
+            "partnerName" : "Tuyen",
+            "storeId" : "Tuyen",
+            "requestType": "captureWallet",
+            "ipnUrl": "voz.vn",
+            "redirectUrl": "voz.vn",
+            "orderId": requestId,
+            "amount": "1000",
+            "lang":  "en",
+            "autoCapture": false,
+            "orderInfo": "Thanh toán qua ví MoMo",
+            "requestId": requestId,
+            "extraData": "",
+            "signature": signature
+        }),
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+        },
+    }).then(function(res){
+        console.log(res)
+        return res.json()
+    }).then(function(data){
+        console.log(data.resultCode)
+    })
+
 }
 
 //async function checkThuoc(thuoc_id, so_luong) {
