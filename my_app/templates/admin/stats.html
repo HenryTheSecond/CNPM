@@ -9,7 +9,7 @@
 
 {% block body %}
 
-<script src="{{ url_for('static',filename='js/script.js') }}"></script>
+<script src="{{ url_for('static',filename='admin/js/script.js') }}"></script>
 
 <form>
   <label for="day">Chọn ngày xem doanh thu:</label><br>
@@ -21,6 +21,8 @@
 
 
 <br>
+
+<div class="col-md-5 col-xs-12">
 <table class="table table-dark">
   <thead>
     <tr>
@@ -34,6 +36,11 @@
 
   </tbody>
 </table>
+</div>
+<div class="col-md-7 col-xs-12">
+  <canvas id="doanhThuNgayStatsId"></canvas>
+</div>
+
 
 
 <form>
@@ -57,7 +64,37 @@
 <span id="tong_tien_thang"></span>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const data = {
+  labels: [
+    'Red',
+    'Blue',
+    'Yellow'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [300, 50, 100],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+const config = {
+  type: 'doughnut',
+  data: data,
+};
 
+
+window.onload = function(){
+  let ctx = document.getElementById('doanhThuNgayStatsId').getContext('2d')
+  new Chart(ctx, config)
+}
+</script>
 
 
 {% endblock %}
+

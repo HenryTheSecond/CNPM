@@ -5,6 +5,7 @@ from my_app import db
 import hmac
 import hashlib
 import requests
+from twilio.rest import Client
 
 date = datetime(year=2021, month=10, day=23)
 
@@ -109,6 +110,10 @@ r = requests.post(url='https://test-payment.momo.vn/v2/gateway/api/create',json=
 print(r.json())'''
 
 
-data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=http://127.0.0.1:5000/cashier&orderId=" + "1" + "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=http://127.0.0.1:5000/cashier&requestId=" + "1" + "&requestType=captureWallet"
+'''data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=http://127.0.0.1:5000/cashier&orderId=" + "1" + "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=http://127.0.0.1:5000/cashier&requestId=" + "1" + "&requestType=captureWallet"
 signature = hmac.new(b"srorZC05FI40gRaEPYCMJjFKDGjtf4BM", data.encode(), hashlib.sha256).hexdigest()
-print(signature)
+print(signature)'''
+
+
+client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "cf3786653d036cb8996ddb8085e22b5d")
+client.messages.create(to="+840964147757", from_="+14422281058", body="Hello world")

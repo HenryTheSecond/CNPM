@@ -92,6 +92,20 @@ function duyet_benh_nhan(id_dk, ngay_dk_kham, id_benh_nhan){
     xoa_luu_tam_thoi(id_dk)
     them_ds_kham(ngay_dk_kham, id_benh_nhan)
     alert('Duyệt thành công')
+    fetch("/api/gui_sms",{
+        method: "post",
+        body: JSON.stringify({
+            "SDT": "0964147757",
+            "message": "Đăng ký của bạn đã được duyệt"
+        }),
+        headers: {
+                "Content-Type": "application/json"
+        }
+    }).then(function(res){
+        return res.json()
+    }).then(function(data){
+
+    })
     location.reload()
 }
 
@@ -111,6 +125,20 @@ async function tu_choi_benh_nhan(id_dk){
     await xoa_luu_tam_thoi(id_dk)
     xoa_dk_onl(id_dk)
     alert('Từ chối thành công')
+    fetch("/api/gui_sms",{
+        method: "post",
+        body: JSON.stringify({
+            "SDT": "0964147757",
+            "message": "Rất tiếc đăng ký bạn không được duyệt"
+        }),
+        headers: {
+                "Content-Type": "application/json"
+        }
+    }).then(function(res){
+        return res.json()
+    }).then(function(data){
+
+    })
     location.reload()
 }
 

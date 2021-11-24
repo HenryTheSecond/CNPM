@@ -12,9 +12,8 @@
 </div>
 {% endif %}
 {% else %}
-<h1 class="text-center text-danger">DANG NHAP</h1>
-<form action="/login" method="post">
-    {% include 'layout/login.html' %}
-</form>
+
+{% include 'layout/login.html' %}
+
 {% endif %}
 {% endblock %}

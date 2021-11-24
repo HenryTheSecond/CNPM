@@ -44,6 +44,7 @@ def them_dskham():
     )
     connection = db.engine.connect()
     connection.execute(stmt)
+
     return redirect("/nurse")
 
 
@@ -112,4 +113,9 @@ def delete_dk_onl(id):
     return jsonify({
         "error_code": 200,
     })
+
+@app.route("/api/gui_sms", methods=['post'])
+def gui_sms():
+    data = request.json
+    return jsonify(utils.gui_sms(data["SDT"], data["message"]))
 
