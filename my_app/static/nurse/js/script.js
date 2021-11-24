@@ -40,6 +40,7 @@ function tim_benh_nhan(){
 function benh_nhan_info(){
     document.getElementById("benh_nhan").style.display = "none";
     document.getElementById("ds_kham").style.display = "none"
+    document.getElementById("lich_duyet").style.display = "none"
     let table = document.getElementById("benh_nhan_info_form");
     table.style.display = "block";
 }
@@ -47,14 +48,109 @@ function benh_nhan_info(){
 function benh_nhan_click(){
     document.getElementById("benh_nhan_info_form").style.display = "none"
     document.getElementById("ds_kham").style.display = "none"
+    document.getElementById("lich_duyet").style.display = "none"
     let table = document.getElementById("benh_nhan")
     table.style.display = "block"
 }
+
+function duyet_lich(){
+    document.getElementById("benh_nhan_info_form").style.display = "none"
+    document.getElementById("ds_kham").style.display = "none"
+    document.getElementById("benh_nhan").style.display = "none"
+    let table = document.getElementById("lich_duyet")
+    table.style.display = "block"
+    fetch("/api/ds-duyet-lich", {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            console.info(res)
+            return res.json()
+        }).then(function(data){
+            console.info(data)
+            let table = document.getElementById("bang_duyet_lich")
+            table.innerHTML = ""
+            for(i of data.danh_sach){
+                let row = table.insertRow()
+                let cell = row.insertCell()
+                cell.innerText = i.id;
+                cell = row.insertCell()
+                cell.innerText = i.ten
+                cell = row.insertCell()
+                cell.innerText = toDateString(i.ngay_dk_kham)
+                cell = row.insertCell()
+                cell.innerText = i.so_dt
+                cell = row.insertCell()
+                cell.innerHTML = `<a href="javascript:;" onclick="duyet_benh_nhan(${i.id_dk}, '${formatInsertDate(i.ngay_dk_kham)}', ${i.id})">Duyệt</a> | <a href="javascript:;" onclick="tu_choi_benh_nhan(${i.id_dk})">Từ chối</a>`
+            }
+        })
+}
+
+function duyet_benh_nhan(id_dk, ngay_dk_kham, id_benh_nhan){
+    if (confirm("Bạn có chắc duyệt người này không?") == true)
+    xoa_luu_tam_thoi(id_dk)
+    them_ds_kham(ngay_dk_kham, id_benh_nhan)
+    alert('Duyệt thành công')
+    location.reload()
+}
+
+async function xoa_luu_tam_thoi(id){
+        await fetch("/api/delete-luu-tam-thoi/" + id, {
+        method: "delete"
+        }).then(function(res) {
+            console.log(res)
+            return res.json()
+        }).then(function(data) {
+            console.log(data)
+        })
+}
+
+async function tu_choi_benh_nhan(id_dk){
+    if (confirm("Bạn có chắc muốn từ chối người này không?") == true)
+    await xoa_luu_tam_thoi(id_dk)
+    xoa_dk_onl(id_dk)
+    alert('Từ chối thành công')
+    location.reload()
+}
+
+function xoa_dk_onl(id){
+    fetch("/api/delete-dk-onl/" + id, {
+            method: "delete"
+            }).then(function(res) {
+                console.log(res)
+                return res.json()
+            }).then(function(data) {
+                console.log(data)
+            })
+}
+
+
+
+function them_ds_kham(ngay_kham_dk, id_benh_nhan) {
+    fetch("/api/them-ds-kham", {
+        method: 'post',
+        body: JSON.stringify({
+            "id_benh_nhan": id_benh_nhan,
+            "ngay_kham_dk": ngay_kham_dk
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function(res) {
+        console.info(res)
+        return res.json()
+    }).then(function(data) {
+        console.info(data)
+    })
+}
+
 
 
 function ds_kham_click(){
    document.getElementById("benh_nhan").style.display = "none";
    document.getElementById("benh_nhan_info_form").style.display = "none"
+   document.getElementById("lich_duyet").style.display = "none"
    let table = document.getElementById("ds_kham");
    table.style.display = "block";
 }
@@ -91,4 +187,9 @@ function xem_ds_kham(){
 function toDateString(dateString){
     let date = new Date(dateString)
     return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+}
+
+function formatInsertDate(dateString){
+     let date = new Date(i.ngay_dk_kham)
+     return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate()
 }

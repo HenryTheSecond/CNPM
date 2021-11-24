@@ -16,12 +16,11 @@
 
       {% if current_user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link text-danger" href="/">
           {% if current_user.avatar %}
           <img src="{{ current_user.avatar }}" width="30" class="rounded-circle" />
           {% endif %}
-          {{ current_user.username }}
         </a>
+        <a class="nav-link" href="/chuyen-trang?role={{current_user.role_Id}}">{{ current_user.username }}</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/user-logout">Dang xuat</a>
