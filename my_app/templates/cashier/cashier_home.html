@@ -162,32 +162,32 @@
 <div id="lap_phieu_hoa_don" style="display: none">
 
 
-    <form action="thanh-toan-momo" method="post" class="container">
+    <form action="/api/thanh-toan-online" method="post" class="container">
       <div class="form-group">
         <label for="id_kham_benh">ID khám bệnh:</label>
-        <span id="id_kham_benh"></span>
+        <span id="id_kham_benh" ></span>
 
       </div>
-
+        <input type="text" name="id_kham_benh" style="display:none">
 
   <div id="don_thuoc">
       <div name="don_thuoc">
       <label>Thuốc:</label>
-      <select class="hoa_don">
+      <select class="hoa_don" name="don_thuoc_select">
       {% for t in thuoc %}
         <option value="{{t.id}}">{{t.tenThuoc}}</option>
       {%endfor%}
       </select>
 
        <label>Giá:</label>
-       <select class="hoa_don">
+       <select class="hoa_don" name="gia_thuoc_select">
       {% for t in thuoc %}
         <option value="{{t.gia}}">{{t.gia}}</option>
       {%endfor%}
       </select>
 
       <label>Số lượng:</label>
-      <input type="number" class="hoa_don" placeholder="Số lượng" required>
+      <input name="so_luong" type="number" class="hoa_don" placeholder="Số lượng" required>
       </div>
   </div>
         <br>
@@ -195,7 +195,7 @@
      <br>
      <br>
     <div class="btn btn-primary" onclick="lap_hoa_don()">Thanh toán tiền mặt</div>
-        <div  class="btn btn-danger" onclick="thanh_toan_momo()"> Thanh toán momo </div>
+        <button  class="btn btn-danger" > Thanh toán momo </button>
         <br>
         <a href="" id="link_momo"></a>
 </form>

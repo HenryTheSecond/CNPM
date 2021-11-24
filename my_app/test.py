@@ -2,7 +2,8 @@ from models import *
 from datetime import datetime
 from sqlalchemy import func, cast, Date
 from my_app import db
-
+import hmac
+import hashlib
 import requests
 
 date = datetime(year=2021, month=10, day=23)
@@ -88,7 +89,7 @@ db.session.commit()
 print(dang_ky.id)'''
 
 
-data = {
+'''data = {
             "partnerCode": "MOMOFIF820211121",
             "partnerName" : "Tuyen",
             "storeId" : "Tuyen",
@@ -105,4 +106,9 @@ data = {
             "signature": "9998a19535d91d8b03ea026b06c31ebf13289dcded222fd5af51b19fdbd17b81"
 }
 r = requests.post(url='https://test-payment.momo.vn/v2/gateway/api/create',json=data, headers={"Content-Type": "application/json; charset=UTF-8"})
-print(r.json())
+print(r.json())'''
+
+
+data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=http://127.0.0.1:5000/cashier&orderId=" + "1" + "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=http://127.0.0.1:5000/cashier&requestId=" + "1" + "&requestType=captureWallet"
+signature = hmac.new(b"srorZC05FI40gRaEPYCMJjFKDGjtf4BM", data.encode(), hashlib.sha256).hexdigest()
+print(signature)

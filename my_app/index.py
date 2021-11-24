@@ -10,10 +10,12 @@ from nurse import *
 from doctor import *
 from cashier import *
 from flask_cors import CORS
-
+import hmac
+import hashlib
 import requests
 
 
+list = []
 
 @app.route("/")
 def home():
@@ -141,29 +143,34 @@ def doanh_thu_thang(month, year):
 
 @app.route("/api/thanh-toan-online", methods=['post'])
 def thanh_toan_online():
-    data = request.json
-    requestId = data["requestId"]
-    signature = data["signature"]
-    params = {
-        "partnerCode": "MOMOFIF820211121",
-        "partnerName": "Tuyen",
-        "storeId": "Tuyen",
-        "requestType": "captureWallet",
-        "ipnUrl": "http://127.0.0.1:5000/cashier",
-        "redirectUrl": "http://127.0.0.1:5000/cashier",
-        "orderId": requestId,
-        "amount": 1000,
-        "lang": "en",
-        "autoCapture": False,
-        "orderInfo": "Thanh toán qua ví MoMo",
-        "requestId": requestId,
-        "extraData": "",
-        "signature": signature
-    }
-    r = requests.post(url='https://test-payment.momo.vn/v2/gateway/api/create', json=params,
-                      headers={"Content-Type": "application/json; charset=UTF-8"})
-    return jsonify(r.json())
+    don_thuoc = request.form.getlist("don_thuoc_select")
+    gia_thuoc = request.form.getlist("gia_thuoc_select")
+    so_luong = request.form.getlist("so_luong")
+    id_kham_benh = request.form.get("id_kham_benh")
+    gia = 0
+    hoa_don = HoaDon(id_KhamBenh=id_kham_benh, total=TienKham.query.first().gia)
+    global list
+    list.append(hoa_don)
+    db.session.add(hoa_don)
+    for i in range(0, len(gia_thuoc)):
+        chi_tiet = ChiTietHoaDon(id_KhamBenh= id_kham_benh, id_Thuoc= don_thuoc[i], gia=gia_thuoc[i], soLuong=so_luong[i])
+        db.session.add(chi_tiet)
+        list.append(chi_tiet)
+        gia += int(float(so_luong[i])) * int(float(gia_thuoc[i]))
+    hoa_don.total += gia
 
+    r = utils.link_thanh_toan(hoa_don.total)
+    return redirect(r.json()['payUrl'])
+
+
+@app.route("/momo/xu-ly")
+def luu_hoa_don():
+    global list
+    for i in list:
+        db.session.add(i)
+    db.session.commit()
+    list.clear()
+    return redirect("/cashier")
 
 
 if __name__ == '__main__':

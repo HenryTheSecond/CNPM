@@ -48,6 +48,8 @@ function chon_click(id){
     let id_kham_benh = document.getElementById("id_kham_benh");
     id_kham_benh.innerText = id;
     table.style.display = "block";
+
+    document.getElementsByName("id_kham_benh")[0].value = id
 }
 
 
@@ -182,7 +184,6 @@ function thanh_toan_momo(){
     }).then(function(data){
         console.log(data.resultCode)
     })*/
-
 
     let timestamp = new Date().valueOf()
     let requestId = "tuyen" + timestamp
