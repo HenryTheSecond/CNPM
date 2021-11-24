@@ -24,6 +24,23 @@ def home():
 def user_load(user_id):
     return User.query.get(user_id)
 
+@app.route("/chuyen-trang")
+def chuyen_trang():
+    role = int(request.args.get("role"));
+
+    if role == 1:
+        return redirect("/admin")
+    elif role == 2:
+        return redirect("/doctor")
+    elif role == 3:
+        return redirect("/nurse")
+    elif role == 4:
+        return redirect("/cashier")
+    else:
+        msg = "Lỗi chuyển trang"
+
+    return render_template('layout/login.html', msg=msg)
+
 
 @app.route('/dang-ki-online', methods=['get', 'post'])
 def dang_ki_online():

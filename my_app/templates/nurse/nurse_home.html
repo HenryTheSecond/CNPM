@@ -65,7 +65,7 @@
 </button>
 
 
-<button class="w3-third">
+<button onclick="duyet_lich()" class="w3-third">
   <div class="w3-card w3-container" style="min-height:250px">
   <h3>Duyệt lịch đặt</h3><br>
  <i class="fa fa-plus-square w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
@@ -208,6 +208,24 @@
 </div>
 
 
+<div id="lich_duyet" style="display: none">
+
+      <table>
+  <thead>
+  <tr>
+    <th>Id Bệnh nhân</th>
+    <th>Tên bệnh nhân</th>
+    <th>Ngày đăng ký khám</th>
+    <th>Số điện thoại</th>
+    <th>Duyệt lịch</th>
+  </tr>
+  </thead>
+
+   <tbody id="bang_duyet_lich">
+
+  </tbody>
+      </table>
+</div>
 
 {%else%}
 <h1>Bạn không thể truy cập trang này</h1>
