@@ -148,15 +148,14 @@ async function updateThuoc(thuoc_id, so_luong) {
 
 
 function thanh_toan_momo(){
-    var timestamp = new Date().valueOf()
-    var requestId = "tuyen" + timestamp
+    /*let timestamp = new Date().valueOf()
+    let requestId = "tuyen" + timestamp
     data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=voz.vn&orderId=" + requestId  +  "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=voz.vn&requestId=" + requestId  +  "&requestType=captureWallet"
     signature = CryptoJS.HmacSHA256(data, "srorZC05FI40gRaEPYCMJjFKDGjtf4BM").toString(CryptoJS.enc.Hex)
     console.log(requestId)
     console.log(signature)
-    fetch("https://test-payment.momo.vn/v2/gateway/api/create",{
+    fetch("https://cors-anywhere.herokuapp.com/https://test-payment.momo.vn/v2/gateway/api/create",{
         mode: 'cors',
-        credentials: 'include',
         method: "post",
         body: JSON.stringify({
             "partnerCode": "MOMOFIF820211121",
@@ -176,12 +175,35 @@ function thanh_toan_momo(){
         }),
         headers: {
             "Content-Type": "application/json; charset=UTF-8",
-        },
+        }
     }).then(function(res){
         console.log(res)
         return res.json()
     }).then(function(data){
         console.log(data.resultCode)
+    })*/
+
+
+    let timestamp = new Date().valueOf()
+    let requestId = "tuyen" + timestamp
+    data = "accessKey=RCmyRRu3ONRNC9xm&amount=1000&extraData=&ipnUrl=http://127.0.0.1:5000/cashier&orderId=" + requestId  +  "&orderInfo=Thanh toán qua ví MoMo&partnerCode=MOMOFIF820211121&redirectUrl=http://127.0.0.1:5000/cashier&requestId=" + requestId  +  "&requestType=captureWallet"
+    signature = CryptoJS.HmacSHA256(data, "srorZC05FI40gRaEPYCMJjFKDGjtf4BM").toString(CryptoJS.enc.Hex)
+    console.log(requestId)
+    console.log(signature)
+    fetch("/api/thanh-toan-online",{
+        method: "post",
+        body: JSON.stringify({
+            "requestId": requestId,
+            "signature": signature
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function(res){
+        return res.json()
+    }).then(function(data){
+        document.getElementById("link_momo").href = data.payUrl
+        document.getElementById("link_momo").innerText = data.payUrl
     })
 
 }

@@ -9,6 +9,10 @@ import utils
 from nurse import *
 from doctor import *
 from cashier import *
+from flask_cors import CORS
+
+import requests
+
 
 
 @app.route("/")
@@ -133,6 +137,32 @@ def doanh_thu_thang(month, year):
     for r in resultSet:
         data.append({"ngay_kham": r[0], "doanh_thu_ngay":r[1]})
     return jsonify({"doanh_thu_ngay": data})
+
+
+@app.route("/api/thanh-toan-online", methods=['post'])
+def thanh_toan_online():
+    data = request.json
+    requestId = data["requestId"]
+    signature = data["signature"]
+    params = {
+        "partnerCode": "MOMOFIF820211121",
+        "partnerName": "Tuyen",
+        "storeId": "Tuyen",
+        "requestType": "captureWallet",
+        "ipnUrl": "http://127.0.0.1:5000/cashier",
+        "redirectUrl": "http://127.0.0.1:5000/cashier",
+        "orderId": requestId,
+        "amount": 1000,
+        "lang": "en",
+        "autoCapture": False,
+        "orderInfo": "Thanh toán qua ví MoMo",
+        "requestId": requestId,
+        "extraData": "",
+        "signature": signature
+    }
+    r = requests.post(url='https://test-payment.momo.vn/v2/gateway/api/create', json=params,
+                      headers={"Content-Type": "application/json; charset=UTF-8"})
+    return jsonify(r.json())
 
 
 

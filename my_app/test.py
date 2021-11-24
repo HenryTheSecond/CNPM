@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import func, cast, Date
 from my_app import db
 
+import requests
+
 date = datetime(year=2021, month=10, day=23)
 
 '''a = db.session.query(func.sum(HoaDon.total))\
@@ -78,9 +80,29 @@ for i in benh_nhan.cacLanKham:
 
 print(res)'''
 
-dang_ky = DangKyOnline(id_BenhNhan=int(1), soDT='1234', ngayDangKy=datetime.now(),
+'''dang_ky = DangKyOnline(id_BenhNhan=int(1), soDT='1234', ngayDangKy=datetime.now(),
                                    ngayKhamDangKy=datetime.now(), isKhamLanDau=True)
 
 db.session.add(dang_ky)
 db.session.commit()
-print(dang_ky.id)
+print(dang_ky.id)'''
+
+
+data = {
+            "partnerCode": "MOMOFIF820211121",
+            "partnerName" : "Tuyen",
+            "storeId" : "Tuyen",
+            "requestType": "captureWallet",
+            "ipnUrl": "voz.vn",
+            "redirectUrl": "voz.vn",
+            "orderId": "tuyen1637716747768",
+            "amount": "1000",
+            "lang":  "en",
+            "autoCapture": False,
+            "orderInfo": "Thanh toán qua ví MoMo",
+            "requestId": "tuyen1637716747768",
+            "extraData": "",
+            "signature": "9998a19535d91d8b03ea026b06c31ebf13289dcded222fd5af51b19fdbd17b81"
+}
+r = requests.post(url='https://test-payment.momo.vn/v2/gateway/api/create',json=data, headers={"Content-Type": "application/json; charset=UTF-8"})
+print(r.json())
