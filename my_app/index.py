@@ -46,6 +46,8 @@ def chuyen_trang():
 
 @app.route('/dang-ki-online', methods=['get', 'post'])
 def dang_ki_online():
+    global list
+    list.clear()
     if(request.method == "POST"):
         SDT = request.form.get("SDT")
         ngay_kham = request.form.get("ngay_kham")
@@ -61,19 +63,41 @@ def dang_ki_online():
             dang_ky = DangKyOnline(id_BenhNhan=benh_nhan.id, soDT=SDT, ngayDangKy=datetime.now(), ngayKhamDangKy=ngay_kham, isKhamLanDau=True)
             db.session.add(dang_ky)
             db.session.commit()
-            tam_thoi_luu_tru = TamThoiLuuTru(id = dang_ky.id, trangThai=True)
+            tam_thoi_luu_tru = TamThoiLuuTru(id = dang_ky.id, trangThai=False)
             db.session.add(tam_thoi_luu_tru)
+            list.append(tam_thoi_luu_tru)
         else:
             id_benh_nhan = request.form.get("id")
             dang_ky = DangKyOnline(id_BenhNhan=int(id_benh_nhan), soDT=SDT, ngayDangKy=datetime.now(),
                                    ngayKhamDangKy=ngay_kham, isKhamLanDau=False)
             db.session.add(dang_ky)
             db.session.commit()
-            tam_thoi_luu_tru = TamThoiLuuTru(id=dang_ky.id, trangThai=True)
+            tam_thoi_luu_tru = TamThoiLuuTru(id=dang_ky.id, trangThai=False)
             db.session.add(tam_thoi_luu_tru)
+            list.append(tam_thoi_luu_tru)
         db.session.commit()
-        return render_template('layout/login.html', msg="Đăng kí online thành công")
+        r = utils.link_thanh_toan(TienKham.query.first().gia, "http://127.0.0.1:5000/momo/xu-ly-dang-ky")
+        return redirect(r.json()['payUrl'])
     return render_template("dk_online/dk_online.html")
+
+@app.route("/momo/xu-ly-dang-ky")
+def xu_ly_dang_ky():
+    global list
+    gia = request.args.get("amount")
+    requestId = request.args.get("requestId")
+    confirm = utils.confirm_thanh_toan(gia, requestId)
+    print(confirm.json())
+    try:
+        if confirm.json()['resultCode'] == 0:
+            for i in list:
+                i.trangThai = True
+                db.session.add(i)
+                db.session.commit()
+    except Exception as ex:
+        db.session.rollback()
+    list.clear()
+    return redirect("/dang-ki-online")
+
 
 @app.route("/login", methods=['post', 'get'])
 def login_exe():
@@ -176,20 +200,25 @@ def thanh_toan_online():
         gia += int(float(so_luong[i])) * int(float(gia_thuoc[i]))
     hoa_don.total += gia
 
-    r = utils.link_thanh_toan(hoa_don.total)
+    r = utils.link_thanh_toan(hoa_don.total, "http://127.0.0.1:5000/momo/xu-ly")
     return redirect(r.json()['payUrl'])
 
 
 @app.route("/momo/xu-ly")
 def luu_hoa_don():
     global list
-    for i in list:
-        db.session.add(i)
-    db.session.commit()
-    list.clear()
     gia = request.args.get("amount")
     requestId = request.args.get("requestId")
-    utils.confirm_thanh_toan(gia, requestId)
+    confirm = utils.confirm_thanh_toan(gia, requestId)
+    print(confirm.json())
+    try:
+        if confirm.json()['resultCode'] == 0:
+            for i in list:
+                db.session.add(i)
+        db.session.commit()
+    except Exception as ex:
+        db.session.rollback()
+    list.clear()
     return redirect("/cashier")
 
 
