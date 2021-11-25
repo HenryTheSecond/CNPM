@@ -187,6 +187,9 @@ def luu_hoa_don():
         db.session.add(i)
     db.session.commit()
     list.clear()
+    gia = request.args.get("amount")
+    requestId = request.args.get("requestId")
+    utils.confirm_thanh_toan(gia, requestId)
     return redirect("/cashier")
 
 

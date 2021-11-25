@@ -29,6 +29,23 @@ def link_thanh_toan(gia):
                   headers={"Content-Type": "application/json; charset=UTF-8"})
 
 
+def confirm_thanh_toan(gia, requestId):
+    data = "accessKey=RCmyRRu3ONRNC9xm&amount=" +  str(int(float(gia))) + "&description=Xac nhan thanh toan&orderId=" + requestId + "&partnerCode=MOMOFIF820211121&requestId=" + requestId +  "&requestType=capture"
+    signature = hmac.new(b"srorZC05FI40gRaEPYCMJjFKDGjtf4BM", data.encode(), hashlib.sha256).hexdigest()
+    params = {
+                "partnerCode": "MOMOFIF820211121",
+                "requestId": requestId,
+                "orderId": requestId,
+                "requestType": "capture",
+                "lang": "vi",
+                "amount": int(float(gia)),
+                "description": "Xac nhan thanh toan",
+                "signature": signature
+            }
+    return requests.post(url='https://test-payment.momo.vn/v2/gateway/api/confirm', json=params,
+                         headers={"Content-Type": "application/json; charset=UTF-8"})
+
+
 def gui_sms(phone, message):
     try:
         client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "cf3786653d036cb8996ddb8085e22b5d")
