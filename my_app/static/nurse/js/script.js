@@ -1,3 +1,9 @@
+
+Date.prototype.subtractHours = function(h) {
+  this.setTime(this.getTime() - (h*60*60*1000));
+  return this;
+}
+
 function tim_benh_nhan(){
     var loai_tim_kiem = document.querySelector('input[name="tim_kiem_benh_nhan"]:checked').id;
     var kw
@@ -78,7 +84,7 @@ function duyet_lich(){
                 cell = row.insertCell()
                 cell.innerText = i.ten
                 cell = row.insertCell()
-                cell.innerText = toDateString(i.ngay_dk_kham)
+                cell.innerText = toLocalDateString(i.ngay_dk_kham)
                 cell = row.insertCell()
                 cell.innerText = i.so_dt
                 cell = row.insertCell()
@@ -207,7 +213,7 @@ function xem_ds_kham(){
                 cell = row.insertCell()
                 cell.innerText = i.SDT
                 cell = row.insertCell()
-                cell.innerText = toDateString(i.ngay_kham)
+                cell.innerText = toLocalDateString(i.ngay_kham)
             }
         })
 }
@@ -217,7 +223,12 @@ function toDateString(dateString){
     return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
 }
 
+function toLocalDateString(dateString){
+    let date = new Date(dateString).subtractHours(7)
+    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+}
+
 function formatInsertDate(dateString){
-     let date = new Date(i.ngay_dk_kham)
-     return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate()
+     let date = new Date(dateString).subtractHours(7)
+     return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
 }

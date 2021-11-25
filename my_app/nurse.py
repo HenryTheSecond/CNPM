@@ -35,17 +35,23 @@ def them_dskham():
     id = request.args.get("id")
     today = date.today()
 
-    metadata = db.MetaData()
-    kham_benh = db.Table('kham_benh', metadata, autoload=True, autoload_with=db.engine)
+    so_benh_nhan = KhamBenh.query.filter(cast(KhamBenh.ngayKham, Date) == today).count()
+    print(so_benh_nhan)
+    if so_benh_nhan > 5:
+        msg = "Đã đạt số lượng khám tối đa"
+        return render_template('nurse/nurse_home.html', msg=msg)
+    else:
+        metadata = db.MetaData()
+        kham_benh = db.Table('kham_benh', metadata, autoload=True, autoload_with=db.engine)
 
-    stmt = (
-        insert(kham_benh).
-            values(id_BenhNhan = id, ngayKham = today)
-    )
-    connection = db.engine.connect()
-    connection.execute(stmt)
+        stmt = (
+            insert(kham_benh).
+                values(id_BenhNhan = id, ngayKham = today)
+        )
+        connection = db.engine.connect()
+        connection.execute(stmt)
 
-    return redirect("/nurse")
+        return redirect("/nurse")
 
 
 @app.route('/api/xem-dskham/<date>', methods=["get"])
