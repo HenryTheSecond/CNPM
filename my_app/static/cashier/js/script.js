@@ -1,4 +1,5 @@
 function bao_cao_doanh_thu_click(){
+    document.getElementById("bao_cao_su_dung_thuoc").style.display = "none"
     document.getElementById("benh_nhan_da_lap_phieu").style.display = "none"
     document.getElementById("lap_phieu_hoa_don").style.display = "none"
     let table = document.getElementById("doanh_thu_info");
@@ -7,6 +8,7 @@ function bao_cao_doanh_thu_click(){
 
 
 function lap_hoa_don_click(){
+    document.getElementById("bao_cao_su_dung_thuoc").style.display = "none"
     document.getElementById("doanh_thu_info").style.display = "none"
     document.getElementById("lap_phieu_hoa_don").style.display = "none"
     let table = document.getElementById("benh_nhan_da_lap_phieu");
@@ -148,6 +150,23 @@ async function updateThuoc(thuoc_id, so_luong) {
     })
 }
 
+
+function bao_cao_thuoc_click(){
+    document.getElementById("bao_cao_su_dung_thuoc").style.display = "block"
+    document.getElementById("doanh_thu_info").style.display ="none"
+    document.getElementById("lap_phieu_hoa_don").style.display = "none"
+    document.getElementById("benh_nhan_da_lap_phieu").style.display = "none"
+    fetch("/api/thong-ke-thuoc",{
+        method: "get",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function(res){
+        return res.json()
+    }).then(function(data){
+
+    })
+}
 
 function thanh_toan_momo(){
     /*let timestamp = new Date().valueOf()

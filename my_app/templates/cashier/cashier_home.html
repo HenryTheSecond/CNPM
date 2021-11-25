@@ -83,54 +83,55 @@
 
 
 <div id="doanh_thu_info" style="display: none">
-<script src="{{ url_for('static',filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static',filename='admin/js/script.js') }}"></script>
 
-<form>
-  <label for="day">Chọn ngày xem doanh thu:</label><br>
-  <input type="date" id="day" name="day">
-  <input type="button" value="Xem" onclick="doanhThuNgay()">
-</form>
-
-
-
-
-<br>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">tên bệnh nhân</th>
-      <th scope="col">ngày khám</th>
-      <th scope="col">tổng tiền trên bill</th>
-    </tr>
-  </thead>
-
-  <tbody id="danh_sach_ngay">
-
-  </tbody>
-</table>
-<span id="tong_tien"></span>
+    <form>
+      <label for="day">Chọn ngày xem doanh thu:</label><br>
+      <input type="date" id="day" name="day">
+      <input type="button" value="Xem" onclick="doanhThuNgay()">
+    </form>
 
 
 
-<form>
-  <label for="month">Chọn ngày tháng </label>
-  <input type="number" min="1" max="12" id="month" name="month" placeholder="tháng">
-  <label for="year">năm:</label>
-  <input type="number" min="2020" max="3000" id="year" name="year" value="2021">
-  <input type="button" value="Xem" onclick="doanhThuThang()">
-</form>
-<br>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">ngày khám</th>
-      <th scope="col">tổng tiền trên ngày</th>
-    </tr>
-  </thead>
-  <tbody id="danh_sach_thang">
-  </tbody>
-</table>
-<span id="tong_tien_thang"></span>
+
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">tên bệnh nhân</th>
+          <th scope="col">ngày khám</th>
+          <th scope="col">tổng tiền trên bill</th>
+        </tr>
+      </thead>
+
+      <tbody id="danh_sach_ngay">
+
+      </tbody>
+    </table>
+    <span id="tong_tien"></span>
+
+
+
+    <form>
+      <label for="month">Chọn ngày tháng </label>
+      <input type="number" min="1" max="12" id="month" name="month" placeholder="tháng">
+      <label for="year">năm:</label>
+      <input type="number" min="2020" max="3000" id="year" name="year" value="2021">
+      <input type="button" value="Xem" onclick="doanhThuThang()">
+    </form>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">ngày khám</th>
+          <th scope="col">tổng tiền trên ngày</th>
+        </tr>
+      </thead>
+      <tbody id="danh_sach_thang">
+      </tbody>
+    </table>
+    <span id="tong_tien_thang"></span>
+
 </div>
 
 
@@ -203,11 +204,78 @@
 </div>
 
 
+<div id="bao_cao_su_dung_thuoc" style="display:none">
+    <div class="row">
+    <div class="col-md-6 col-xs-12">
+        <table  class="table">
+            <tr>
+                <th>Mã thuốc</th>
+                <th>Tên thuốc</th>
+                <th>Số lượng đã bán</th>
+            </tr>
+            {% for th in so_luong_thuoc_ban %}
+            <tr>
+                <td>{{ th[0] }}</td>
+                <td>{{ th[1] }}</td>
+                <td>{%if th[2] == None%} 0 {%else%} {{th[2]}} {%endif%}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="col-md-6 col-xs-12">
+        <canvas id="catStatsId"></canvas>
+    </div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = [], info=[]
+    let colors = []
+    {%for th in so_luong_thuoc_ban%}
+        labels.push('{{th[1]}}')
+        {% if th[2]==None %}
+            info.push(0)
+        {%else%}
+            info.push({{th[2]}})
+        {%endif%}
+    {%endfor%}
+    for(let i=0; i<labels.length; i++){
+        let r = parseInt(Math.random() * 255)
+        let g = parseInt(Math.random() * 255)
+        let b = parseInt(Math.random() * 255)
+        colors.push(`rgb(${r}, ${g}, ${b})`)
+    }
+
+    const data = {
+    labels: labels,
+      datasets: [{
+        label: 'Thống kê số lượng thuốc bán',
+        data: info,
+        backgroundColor: colors,
+        hoverOffset: 4
+      }]
+    };
+    const config = {
+      type: 'doughnut',
+      data: data,
+    };
+
+
+    window.onload = function(){
+      let ctx = document.getElementById('catStatsId').getContext('2d')
+      new Chart(ctx, config)
+    }
+</script>
+
 
 
 {%else%}
 <h1>Bạn không thể truy cập trang này</h1>
 {%endif%}
+
 
 </body>
 </html>

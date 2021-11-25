@@ -80,6 +80,12 @@ class StatsView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role_Id == 1
 
+class RegisterView(BaseView):
+    @expose("/")
+    def index(self):
+        return self.render("admin/register.html")
+
+
 admin.add_view(DangKyOnlineView(DangKyOnline, db.session , name="Đăng Ký Online"))
 admin.add_view(TamThoiLuuTruView(TamThoiLuuTru, db.session , name="Lưu Trữ Tạm"))
 admin.add_view(SoBenhNhanView(SoBenhNhan, db.session, name="Số Lượng Bệnh Nhân 1 Ngày"))
@@ -87,14 +93,15 @@ admin.add_view(BenhNhanView(BenhNhan, db.session, name="Bệnh Nhân"))
 admin.add_view(KhamBenhView(KhamBenh, db.session, name="Khám Bệnh"))
 admin.add_view(BenhView(Benh, db.session , name="Bệnh"))
 admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh"))
-admin.add_view(DonThuocView(DonThuoc, db.session , name="Đơn Thuốc"))
-admin.add_view(ChiTietHoaDonView(ChiTietHoaDon, db.session , name="Chi Tiết Hóa Đơn"))
+#admin.add_view(DonThuocView(DonThuoc, db.session , name="Đơn Thuốc"))
+#admin.add_view(ChiTietHoaDonView(ChiTietHoaDon, db.session , name="Chi Tiết Hóa Đơn"))
 admin.add_view(HoaDonView(HoaDon, db.session , name="Hóa Đơn"))
 #admin.add_view(BacSiView(BacSi, db.session, name="Bác Sĩ"))
 admin.add_view(ThuocView(Thuoc, db.session , name="Thuốc"))
 admin.add_view(CachDungView(CachDung, db.session , name="Cách Dùng"))
 admin.add_view(DonViView(DonVi, db.session , name="Đơn Vị"))
-admin.add_view(RoleView(Role, db.session , name="Role"))
+#admin.add_view(RoleView(Role, db.session , name="Role"))
 admin.add_view(TienKhamView(TienKham, db.session , name="Tiền Khám Bệnh"))
 admin.add_view(StatsView(name="Thống Kê"))
+admin.add_view(RegisterView(name="Đăng ký"))
 admin.add_view(LogoutView(name="Đăng xuất"))

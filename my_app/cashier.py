@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, jsonify
 from my_app import app, my_login, db
 from my_app.models import *
 import utils
-from sqlalchemy import insert
+from sqlalchemy import insert, func
 from sqlalchemy import update
 from datetime import date
 
@@ -10,7 +10,9 @@ from datetime import date
 @app.route('/cashier')
 def cashier_home():
     thuoc = Thuoc.query.all()
-    return render_template("cashier/cashier_home.html", thuoc=thuoc)
+    so_luong_thuoc_ban = db.session.query(Thuoc.id, Thuoc.tenThuoc, func.sum(ChiTietHoaDon.soLuong)).\
+        join(ChiTietHoaDon, Thuoc.id==ChiTietHoaDon.id_Thuoc, isouter=True).group_by(Thuoc.id, Thuoc.tenThuoc).all()
+    return render_template("cashier/cashier_home.html", thuoc=thuoc, so_luong_thuoc_ban= so_luong_thuoc_ban)
 
 @app.route('/api/xem-ds-phieu', methods=["get"])
 def ds_phieu():
@@ -104,6 +106,10 @@ def update_soluong_thuoc():
 def lap_phieu_momo():
     return("hello momo page")
 
+
+@app.route("/api/thong-ke-thuoc")
+def thong_ke_thuoc():
+    return jsonify({"aa":1})
 
 # @app.route('/api/check-soluong-thuoc/<id_thuoc>-<so_luong>', methods=["get"])
 # def check_soluong_thuoc(id_thuoc, so_luong):

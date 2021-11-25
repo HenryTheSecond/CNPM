@@ -99,6 +99,26 @@ def xu_ly_dang_ky():
     return redirect("/dang-ki-online")
 
 
+@app.route("/register", methods=['post'])
+def register():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    password = str(hashlib.md5(password.encode("utf-8")).digest())
+    name = request.form.get("name")
+    gender = request.form.get("gender")
+    address = request.form.get("address")
+    date_of_birth = request.form.get("ngay_sinh")
+    phone = request.form.get("phone")
+    role = request.form.get("role")
+    user = User(username=username, password=password, ten=name, gioiTinh=gender, diaChi=address, ngaySinh=date_of_birth, soDT=phone, role_Id=role)
+    db.session.add(user)
+    #db.session.commit()
+    if role == "2":
+        bac_si = BacSi(thongTin=user)
+        db.session.add(bac_si)
+    db.session.commit()
+    return redirect("/admin", )
+
 @app.route("/login", methods=['post', 'get'])
 def login_exe():
     msg = ""

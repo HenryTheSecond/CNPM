@@ -48,7 +48,7 @@ def confirm_thanh_toan(gia, requestId):
 
 def gui_sms(phone, message):
     try:
-        client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "cf3786653d036cb8996ddb8085e22b5d")
+        client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "2b33e5f98fda5165051f21edb9645dc1")
         client.messages.create(to="+84" + phone, from_="+14422281058", body=message)
         return {"error_code": 200, "message": "Gửi sms thành công"}
     except Exception as ex:
