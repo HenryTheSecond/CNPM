@@ -4,6 +4,21 @@ Date.prototype.subtractHours = function(h) {
   return this;
 }
 
+ function radio_btn_changed(){
+    if(document.getElementById("tim_kiem_theo_ngay").checked){
+        document.getElementById("ngay_tim_kiem").style.display = ""
+        document.getElementsByName("tim_kiem_kw")[0].style.display = "none"
+    }
+    else if(document.getElementById("tim_kiem_theo_ten").checked){
+        document.getElementById("ngay_tim_kiem").style.display = "none"
+        document.getElementsByName("tim_kiem_kw")[0].style.display = ""
+    }
+    else{
+        document.getElementById("ngay_tim_kiem").style.display = "none"
+        document.getElementsByName("tim_kiem_kw")[0].style.display = ""
+    }
+  }
+
 function tim_benh_nhan(){
     var loai_tim_kiem = document.querySelector('input[name="tim_kiem_benh_nhan"]:checked').id;
     var kw
