@@ -61,6 +61,14 @@ function them_thuoc_click(thuoc){
     console.log(clone)
 }
 
+function xoa_thuoc_click(){
+    let index = document.getElementsByName("don_thuoc").length - 1
+    if(index>0){
+        let obj = document.getElementsByName("don_thuoc")[index]
+        obj.remove()
+    }
+}
+
 async function create_bill_id(id_kham_benh) {
     await fetch("/api/create-bill-id" + "/" + id_kham_benh, {
         method: 'get',

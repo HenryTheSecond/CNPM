@@ -134,7 +134,13 @@ function them_thuoc_click(thuoc, cach_dung){
     console.log(clone)
 }
 
-
+function xoa_thuoc_click(){
+    let index = document.getElementsByName("don_thuoc").length - 1
+    if(index>0){
+        let obj = document.getElementsByName("don_thuoc")[index]
+        obj.remove()
+    }
+}
 
 function toDateString(dateString){
     let date = new Date(dateString)

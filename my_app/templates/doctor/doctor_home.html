@@ -21,6 +21,10 @@
 
 {% if current_user.is_authenticated and current_user.role_Id ==2  %}
 <!-- Modal -->
+{%if msg %}
+    alert(msg)
+{%endif%}
+
 <div id="id01" class="w3-modal">
     <div class="w3-modal-content w3-card-4 w3-animate-top">
       <header class="w3-container w3-theme-l1">
@@ -207,6 +211,7 @@
   </div>
         <br>
     <div class="btn btn-success" onclick="them_thuoc_click()">Thêm thuốc</div>
+    <div class="btn btn-danger" onclick="xoa_thuoc_click()">Xóa thuốc</div>
 
         <br><br>
   <input type="submit" class="btn btn-primary" value="Thêm"/>
