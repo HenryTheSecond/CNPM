@@ -132,6 +132,7 @@ function them_thuoc_click(thuoc, cach_dung){
     let clone = document.getElementsByName("don_thuoc")[0].cloneNode( true );
     document.getElementById("don_thuoc").appendChild(clone)
     console.log(clone)
+    clone.id = document.getElementsByName("don_thuoc").length - 1
 }
 
 function xoa_thuoc_click(){

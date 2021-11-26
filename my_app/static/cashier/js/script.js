@@ -59,6 +59,7 @@ function them_thuoc_click(thuoc){
     let clone = document.getElementsByName("don_thuoc")[0].cloneNode( true );
     document.getElementById("don_thuoc").appendChild(clone)
     console.log(clone)
+    clone.id = document.getElementsByName("don_thuoc").length - 1
 }
 
 function xoa_thuoc_click(){
@@ -67,6 +68,12 @@ function xoa_thuoc_click(){
         let obj = document.getElementsByName("don_thuoc")[index]
         obj.remove()
     }
+}
+
+function select_thuoc_changed(obj){
+    thuoc_index = obj.selectedIndex
+    don_thuoc_index = parseInt(obj.parentElement.id)
+    document.getElementsByName("gia_thuoc_select")[don_thuoc_index].selectedIndex = thuoc_index
 }
 
 async function create_bill_id(id_kham_benh) {

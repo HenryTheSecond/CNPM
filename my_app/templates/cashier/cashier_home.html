@@ -172,9 +172,9 @@
         <input type="text" name="id_kham_benh" style="display:none">
 
   <div id="don_thuoc">
-      <div name="don_thuoc">
+      <div name="don_thuoc" id="0">
       <label>Thuốc:</label>
-      <select class="hoa_don" name="don_thuoc_select">
+      <select class="hoa_don" name="don_thuoc_select" onclick="select_thuoc_changed(this)">
       {% for t in thuoc %}
         <option value="{{t.id}}">{{t.tenThuoc}}</option>
       {%endfor%}

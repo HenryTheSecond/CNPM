@@ -192,9 +192,9 @@
   </select>
 
   <div id="don_thuoc">
-      <div name="don_thuoc">
+      <div name="don_thuoc" id="0">
       <label for="thuoc">Thuốc:</label>
-      <select name="don_thuoc_chi_tiet">
+      <select name="don_thuoc_chi_tiet" onchange="">
       {% for t in thuoc %}
         <option value="{{t.id}}" >{{t.tenThuoc}}</option>
       {%endfor%}
@@ -260,6 +260,7 @@
         document.getElementsByName("tim_kiem_kw")[0].style.display = ""
     }
   }
+
 
 
 

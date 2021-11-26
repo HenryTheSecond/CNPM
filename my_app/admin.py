@@ -63,6 +63,9 @@ class ThuocView(AuthenticatedView):
 class TienKhamView(AuthenticatedView):
     pass
 
+class UserView(AuthenticatedView):
+    pass
+
 class LogoutView(BaseView):
     @expose("/")
     def index(self):
@@ -103,5 +106,6 @@ admin.add_view(DonViView(DonVi, db.session , name="Đơn Vị"))
 #admin.add_view(RoleView(Role, db.session , name="Role"))
 admin.add_view(TienKhamView(TienKham, db.session , name="Tiền Khám Bệnh"))
 admin.add_view(StatsView(name="Thống Kê"))
+admin.add_view(UserView(User, db.session, name="User"))
 admin.add_view(RegisterView(name="Đăng ký"))
 admin.add_view(LogoutView(name="Đăng xuất"))
