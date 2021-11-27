@@ -1,6 +1,6 @@
 from models import *
 from datetime import datetime
-from sqlalchemy import func, cast, Date
+from sqlalchemy import func, cast, Date, extract
 from my_app import db
 import hmac
 import hashlib
@@ -118,3 +118,5 @@ print(signature)'''
 #client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "cf3786653d036cb8996ddb8085e22b5d")
 #client.messages.create(to="+840964147757", from_="+14422281058", body="Hello world")
 
+a = db.session.query(extract('month',KhamBenh.ngayKham), func.sum(HoaDon.total)).join(HoaDon, KhamBenh.id==HoaDon.id_KhamBenh).group_by(extract('month',KhamBenh.ngayKham)).all()
+print(a)

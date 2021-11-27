@@ -110,13 +110,16 @@ def register():
     date_of_birth = request.form.get("ngay_sinh")
     phone = request.form.get("phone")
     role = request.form.get("role")
-    user = User(username=username, password=password, ten=name, gioiTinh=gender, diaChi=address, ngaySinh=date_of_birth, soDT=phone, role_Id=role)
-    db.session.add(user)
-    #db.session.commit()
-    if role == "2":
-        bac_si = BacSi(thongTin=user)
-        db.session.add(bac_si)
-    db.session.commit()
+    try:
+        user = User(username=username, password=password, ten=name, gioiTinh=gender, diaChi=address, ngaySinh=date_of_birth, soDT=phone, role_Id=role)
+        db.session.add(user)
+        #db.session.commit()
+        if role == "2":
+            bac_si = BacSi(thongTin=user)
+            db.session.add(bac_si)
+        db.session.commit()
+    except Exception as e:
+        return("Đăng ký thất bại")
     return redirect("/admin", )
 
 @app.route("/login", methods=['post', 'get'])

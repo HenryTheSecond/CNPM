@@ -132,6 +132,11 @@
     </table>
     <span id="tong_tien_thang"></span>
 
+
+    <div class="col-md-6 col-xs-12">
+        <canvas id="doanhThuStatsId"></canvas>
+    </div>
+
 </div>
 
 
@@ -272,7 +277,36 @@
     }
 </script>
 
+<script>
+    const labels_doanh_thu = [1,2,3,4,5,6,7,8,9,10,11,12];
+    var doanh_thu_data = [0,0,0,0,0,0,0,0,0,0,0,0]
+    {%for item in doanh_thu_theo_thang%}
+        doanh_thu_data[{{item[0]}}-1] = {{item[1]}}
+    {%endfor%}
+    const data_doanh_thu = {
+      labels: labels_doanh_thu,
+      datasets: [{
+        label: 'Doanh Thu Các Tháng',
+        data: doanh_thu_data,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    };
 
+    const config_doanh_thu = {
+      type: 'line',
+      data: data_doanh_thu,
+    };
+
+      let ctx_doanh_thu = document.getElementById('doanhThuStatsId').getContext('2d')
+      new Chart(ctx_doanh_thu, config_doanh_thu)
+
+      {%for item in doanh_thu_theo_thang%}
+        console.log( {{item[1]}} )
+    {%endfor%}
+
+</script>
 
 {%else%}
 <h1>Bạn không thể truy cập trang này</h1>

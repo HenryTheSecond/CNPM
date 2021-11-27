@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, session, jsonify
 from my_app import app, my_login, db
 from my_app.models import *
 import utils
-from sqlalchemy import insert, func
+from sqlalchemy import insert, func, extract
 from sqlalchemy import update
 from datetime import date
 
@@ -10,9 +10,11 @@ from datetime import date
 @app.route('/cashier')
 def cashier_home():
     thuoc = Thuoc.query.all()
+    doanh_thu_theo_thang = db.session.query(extract('month',KhamBenh.ngayKham), func.sum(HoaDon.total)).join(HoaDon, KhamBenh.id==HoaDon.id_KhamBenh).\
+        filter(extract('year',KhamBenh.ngayKham)==datetime.now().year).group_by(extract('month',KhamBenh.ngayKham)).all()
     so_luong_thuoc_ban = db.session.query(Thuoc.id, Thuoc.tenThuoc, func.sum(ChiTietHoaDon.soLuong)).\
         join(ChiTietHoaDon, Thuoc.id==ChiTietHoaDon.id_Thuoc, isouter=True).group_by(Thuoc.id, Thuoc.tenThuoc).all()
-    return render_template("cashier/cashier_home.html", thuoc=thuoc, so_luong_thuoc_ban= so_luong_thuoc_ban)
+    return render_template("cashier/cashier_home.html", thuoc=thuoc, so_luong_thuoc_ban= so_luong_thuoc_ban, doanh_thu_theo_thang=doanh_thu_theo_thang)
 
 @app.route('/api/xem-ds-phieu', methods=["get"])
 def ds_phieu():
