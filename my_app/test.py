@@ -115,8 +115,11 @@ signature = hmac.new(b"srorZC05FI40gRaEPYCMJjFKDGjtf4BM", data.encode(), hashlib
 print(signature)'''
 
 
-#client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "cf3786653d036cb8996ddb8085e22b5d")
-#client.messages.create(to="+840964147757", from_="+14422281058", body="Hello world")
+'''client = Client("AC2de7639eaf115bcb2195774eb91a3b6f", "b93c0c5c56fc30586c9552bc02130923")
+client.messages.create(to="+840964147757", from_="+14422281058", body="Hello world")'''
 
-a = db.session.query(extract('month',KhamBenh.ngayKham), func.sum(HoaDon.total)).join(HoaDon, KhamBenh.id==HoaDon.id_KhamBenh).group_by(extract('month',KhamBenh.ngayKham)).all()
-print(a)
+
+queryDoanhThuThang = db.select([kham_benh.columns.ngayKham, db.func.sum(hoa_don.columns.total).label('doanh_thu_ngay')])\
+        .select_from(kham_benh.join(hoa_don, kham_benh.columns.id == hoa_don.columns.id_KhamBenh))\
+        .where(db.and_(db.func.month(kham_benh.columns.ngayKham) == month, db.func.year(kham_benh.columns.ngayKham) == year))\
+        .group_by(kham_benh.columns.ngayKham)

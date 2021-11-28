@@ -4,6 +4,7 @@ from flask_admin import BaseView, expose
 from flask_login import logout_user, current_user
 from flask import redirect
 from my_app import admin
+from sqlalchemy import insert, func, extract
 
 class AuthenticatedView(ModelView):
     def is_accessible(self):
@@ -78,7 +79,11 @@ class LogoutView(BaseView):
 class StatsView(BaseView):
     @expose("/")
     def index(self):
-        return self.render("admin/stats.html")
+        doanh_thu_theo_thang = db.session.query(extract('month', KhamBenh.ngayKham), func.sum(HoaDon.total)).join(
+            HoaDon, KhamBenh.id == HoaDon.id_KhamBenh). \
+            filter(extract('year', KhamBenh.ngayKham) == datetime.now().year).group_by(
+            extract('month', KhamBenh.ngayKham)).all()
+        return self.render("admin/stats.html", doanh_thu_theo_thang=doanh_thu_theo_thang)
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role_Id == 1

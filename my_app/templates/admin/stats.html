@@ -61,36 +61,40 @@
 </table>
 <span id="tong_tien_thang"></span>
 
+    <div>
+        <canvas id="doanhThuStatsId"></canvas>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const data = {
-  labels: [
-    'Red',
-    'Blue',
-    'Yellow'
-  ],
-  datasets: [{
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
-    ],
-    hoverOffset: 4
-  }]
-};
-const config = {
-  type: 'doughnut',
-  data: data,
-};
+    const labels_doanh_thu = [1,2,3,4,5,6,7,8,9,10,11,12];
+    var doanh_thu_data = [0,0,0,0,0,0,0,0,0,0,0,0]
+    {%for item in doanh_thu_theo_thang%}
+        doanh_thu_data[{{item[0]}}-1] = {{item[1]}}
+    {%endfor%}
+    const data_doanh_thu = {
+      labels: labels_doanh_thu,
+      datasets: [{
+        label: 'Doanh Thu Các Tháng',
+        data: doanh_thu_data,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    };
 
+    const config_doanh_thu = {
+      type: 'line',
+      data: data_doanh_thu,
+    };
 
-window.onload = function(){
-  let ctx = document.getElementById('doanhThuNgayStatsId').getContext('2d')
-  new Chart(ctx, config)
-}
+      let ctx_doanh_thu = document.getElementById('doanhThuStatsId').getContext('2d')
+      new Chart(ctx_doanh_thu, config_doanh_thu)
+
+      {%for item in doanh_thu_theo_thang%}
+        console.log( {{item[1]}} )
+    {%endfor%}
+
 </script>
 
 
